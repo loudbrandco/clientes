@@ -1,0 +1,18 @@
+# Netlify — zenaayoub.com
+# En Netlify: Base directory = zena-ecosistema · Package directory = apps/zena
+[build]
+  command = "npm run build:zena"
+  publish = "apps/zena/dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

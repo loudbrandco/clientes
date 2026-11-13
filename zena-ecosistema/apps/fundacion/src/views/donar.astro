@@ -10,7 +10,7 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const L = (es: string, en: string) => t(lang, es, en);
 const en = lang === 'en';
-const config = JSON.stringify({ pk: STRIPE_PUBLISHABLE_KEY, endpoint: en ? '../' + STRIPE_ENDPOINT : STRIPE_ENDPOINT, minimo: MONTO_MINIMO, comision: COMISION, email: LINKS.emailFundacion, lang,
+const config = JSON.stringify({ pk: STRIPE_PUBLISHABLE_KEY, endpoint: STRIPE_ENDPOINT.startsWith('/') ? STRIPE_ENDPOINT : (en ? '../' + STRIPE_ENDPOINT : STRIPE_ENDPOINT), minimo: MONTO_MINIMO, comision: COMISION, email: LINKS.emailFundacion, lang,
   tx: en ? { elige: 'the amount you choose', mes: 'every month', unica: 'one time', min: 'Enter an amount of at least US$ ', prep: 'Preparing secure payment…', aporte: 'Your gift: ', err: 'We couldn’t start the payment. Write to us at ' }
          : { elige: 'el monto que elijas', mes: 'cada mes', unica: 'una sola vez', min: 'Escribe un monto de al menos US$ ', prep: 'Preparando el pago seguro…', aporte: 'Tu aporte: ', err: 'No pudimos iniciar el pago. Escríbenos a ' } });
 ---

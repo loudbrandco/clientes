@@ -11,8 +11,10 @@
 
 export const STRIPE_PUBLISHABLE_KEY = import.meta.env.PUBLIC_STRIPE_KEY || '';
 
-// Archivo PHP que crea la sesión de pago (apps/fundacion/public/api/donacion.php).
-export const STRIPE_ENDPOINT = '../api/donacion.php'; // relativo a /donar/: funciona en el dominio final y en subcarpetas
+// Servicio que crea la sesión de pago.
+//  · Netlify: /api/donacion (función netlify/functions/donacion.mjs) → se define con PUBLIC_STRIPE_ENDPOINT
+//  · Hosting con PHP: ../api/donacion.php (relativo a /donar/, funciona también en subcarpetas)
+export const STRIPE_ENDPOINT = import.meta.env.PUBLIC_STRIPE_ENDPOINT || '../api/donacion.php';
 
 export const MONEDA = 'USD';
 export const MONTOS = [10, 20, 30, 40]; // Montos sugeridos (los mismos del sitio anterior)
