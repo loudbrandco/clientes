@@ -6,7 +6,7 @@
 export const STAGING = process.env.STAGING === '1';
 
 export const ZENA_URL = process.env.ZENA_URL || 'https://www.zenaayoub.com';
-export const FUNDACION_URL = process.env.FUNDACION_URL || 'https://theadventurerscf.org';
+export const FUNDACION_URL = process.env.FUNDACION_URL || 'https://fundacion.zenaayoub.com';
 
 // ID de Google Analytics 4 por sitio. Vacío = no se carga ningún script de analítica.
 export const GA_ZENA = process.env.GA_ZENA || '';
