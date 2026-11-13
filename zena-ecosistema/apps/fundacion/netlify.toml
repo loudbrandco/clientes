@@ -1,16 +1,16 @@
 # Netlify — The Adventurers Children Foundation (theadventurerscf.org)
-# En Netlify: Base directory = zena-ecosistema · Package directory = apps/fundacion
+# En Netlify: Base directory = zena-ecosistema/apps/fundacion (rutas de este archivo relativas a esa carpeta)
 # Variables de entorno en Netlify: STRIPE_SECRET_KEY (secreta), PUBLIC_STRIPE_KEY (pk_live_…)
 [build]
-  command = "npm run build:fundacion"
-  publish = "apps/fundacion/dist"
+  command = "cd ../.. && npm ci && npm run build:fundacion"
+  publish = "dist"
 
 [build.environment]
   NODE_VERSION = "22"
   PUBLIC_STRIPE_ENDPOINT = "/api/donacion"
 
 [functions]
-  directory = "apps/fundacion/netlify/functions"
+  directory = "netlify/functions"
 
 [[redirects]]
   from = "/api/donacion"

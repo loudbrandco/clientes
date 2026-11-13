@@ -1,8 +1,8 @@
 # Netlify — zenaayoub.com
-# En Netlify: Base directory = zena-ecosistema · Package directory = apps/zena
+# En Netlify: Base directory = zena-ecosistema/apps/zena (rutas de este archivo relativas a esa carpeta)
 [build]
-  command = "npm run build:zena"
-  publish = "apps/zena/dist"
+  command = "cd ../.. && npm ci && npm run build:zena"
+  publish = "dist"
 
 [build.environment]
   NODE_VERSION = "22"
