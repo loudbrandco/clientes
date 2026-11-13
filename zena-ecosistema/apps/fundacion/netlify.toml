@@ -8,6 +8,8 @@
 [build.environment]
   NODE_VERSION = "22"
   PUBLIC_STRIPE_ENDPOINT = "/api/donacion"
+  # Clave publicable de Stripe (pública por diseño). La secreta va en Netlify: STRIPE_SECRET_KEY
+  PUBLIC_STRIPE_KEY = "pk_live_51TP2JWJvfAMHnIKvCuoyrD7qkyUTNXAWDlSnVJJaGZwtoCqiku5LFbK5tyuluXENvXiMyiwXX1rqDqlgQi6MUzAS00s64VitVK"
 
 [functions]
   directory = "netlify/functions"
