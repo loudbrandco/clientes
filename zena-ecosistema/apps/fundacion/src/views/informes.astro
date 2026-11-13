@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { proyectos, apoyoLibro } from '../data/fundacion';
+import { LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+const prensa = [...new Map([...proyectos.map((p) => p.fuente), apoyoLibro.fuente].map((f) => [f.url, f])).values()];
+---
+<Base lang={lang} title={L('Informes y documentos', 'Reports & documents')} description={L('Informes, documentos y menciones en prensa de The Adventurers Children Foundation.', 'Reports, documents and press mentions of The Adventurers Children Foundation.')}>
+  <PageHead lang={lang} seccion={L('Transparencia · Informes', 'Transparency · Reports')} lines={lang === 'en' ? ['Reports', '<em class="it-accent">& documents.</em>'] : ['Informes', '<em class="it-accent">y documentos.</em>']} />
+  <section class="wrap grid-12">
+    <div style="grid-column: 1 / span 6; display: grid; gap: var(--sp-5); align-content: start">
+      <div class="note" data-reveal>{L('Aún no hay informes publicados en este sitio. Cuando estén disponibles, los encontrarás aquí.', 'No reports have been published on this site yet. They will appear here once available.')}</div>
+      <p data-reveal>{L('Para solicitar documentos de la fundación, escribe a', 'To request foundation documents, write to')} <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>.</p>
+    </div>
+    <div style="grid-column: 8 / span 5; display: grid; gap: var(--sp-4); align-content: start">
+      <h2 class="h3" data-reveal>{L('La fundación en la prensa', 'The foundation in the press')}</h2>
+      <ul class="dest" role="list">{prensa.map((f) => <li data-reveal><a class="link" href={f.url} target="_blank" rel="noopener">{f.medio} ↗</a> <span class="small muted">· {f.fecha[lang]}</span></li>)}</ul>
+      <a class="link" href={href(lang, '/transparencia')} data-reveal>{L('← Impacto y transparencia', '← Impact & transparency')}</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .dest { border-top: 1px solid var(--line-strong); }
+  .dest li { padding-block: var(--sp-3); border-bottom: 1px solid var(--line); }
+</style>

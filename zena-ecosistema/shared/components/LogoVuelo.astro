@@ -1,0 +1,93 @@
+---
+// Logotipo animado de The Adventurers Children Foundation.
+// El ave (separada del logotipo original) entra volando y aterriza sobre la «T».
+// Fondo de bosque con resplandor cálido y curvas de nivel; el nombre va en crema para que se lea siempre.
+// Las capas se generan desde el logotipo original (ver docs/AUDITORIA.md): logo-anim-texto-*.webp y logo-anim-ave.webp.
+import Contours from './Contours.astro';
+interface Props { class?: string; caption?: string }
+const { class: cls, caption } = Astro.props;
+// Posición final del ave sobre el logotipo (porcentajes del lienzo 1026 × 454; ver shared/scripts/logo_capas_oficial.py)
+const AVE = { left: 19.883, top: 0.661, width: 24.561 };
+---
+<figure class:list={['lv', cls]} data-reveal="lv" aria-label="The Adventurers Children Foundation">
+  <div class="lv__bg" aria-hidden="true">
+    <span class="lv__sun"></span>
+    <Contours class="lv__lines" seed={17} rings={13} />
+  </div>
+  <div class="lv__stage">
+    <img class="lv__text" src="/img/logo-anim-texto-800.webp" srcset="/img/logo-anim-texto-800.webp 800w, /img/logo-anim-texto-1500.webp 1500w" sizes="(max-width: 860px) 86vw, 40vw" alt="The Adventurers Children Foundation" width="1026" height="454" loading="lazy" decoding="async" />
+    <div class="lv__bird" style={`left:${AVE.left}%; top:${AVE.top}%; width:${AVE.width}%`} aria-hidden="true">
+      <div class="lv__fly"><div class="lv__land"><div class="lv__idle">
+        <img class="lv__flap" src="/img/logo-anim-ave.webp" alt="" width="252" height="165" loading="lazy" decoding="async" />
+      </div></div></div>
+    </div>
+  </div>
+  {caption && <figcaption class="lv__cap">{caption}</figcaption>}
+  <button class="lv__replay" type="button" aria-label="Repetir la animación del ave">↻</button>
+</figure>
+
+<script>
+  // Repetir el vuelo al hacer clic (reinicia las animaciones CSS)
+  document.querySelectorAll<HTMLElement>('.lv').forEach((el) => {
+    el.querySelector('.lv__replay')?.addEventListener('click', () => {
+      el.classList.remove('is-in'); void el.offsetWidth; el.classList.add('is-in');
+    });
+  });
+</script>
+
+<style>
+  .lv {
+    --lv-forest: #18382A; --lv-deep: #0E241A; --lv-teal: #1B4440; --lv-sun: 232 176 75; --lv-line: #9CC08F;
+    position: relative; margin: 0; overflow: hidden; isolation: isolate;
+    border-radius: var(--r-lg, 22px); padding: clamp(1.6rem, 5vw, 3.2rem);
+    background: linear-gradient(140deg, var(--lv-forest) 0%, var(--lv-deep) 55%, var(--lv-teal) 100%);
+    box-shadow: 0 24px 60px -28px rgb(0 0 0 / .55);
+  }
+  [data-reveal='lv'] { opacity: 1; transform: none; }
+  .lv__bg { position: absolute; inset: 0; z-index: -1; }
+  .lv__sun { position: absolute; left: 12%; top: -30%; width: 70%; aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, rgb(var(--lv-sun) / .42) 0%, rgb(var(--lv-sun) / .12) 38%, transparent 68%); }
+  .lv :global(.lv__lines) { position: absolute; right: -18%; bottom: -55%; width: 85%; color: var(--lv-line); opacity: .22; }
+  .lv__stage { position: relative; aspect-ratio: 1026 / 454; max-width: 100%; }
+  .lv__text { width: 100%; height: auto; display: block; } /* sin filter: en Safari de iPhone el filtro animado borra la transparencia y deja un recuadro blanco */
+  .lv__bird { position: absolute; }
+  .lv__bird img { width: 100%; height: auto; display: block; filter: drop-shadow(0 6px 8px rgb(0 0 0 / .3)); }
+  .lv__fly, .lv__land, .lv__idle, .lv__flap { transform-origin: 50% 70%; }
+  .lv__cap { color: #E9E3D3; font-size: var(--fs-sm, .9rem); margin-top: 1rem; opacity: .85; }
+  .lv__replay { position: absolute; right: .8rem; bottom: .8rem; width: 2.2rem; height: 2.2rem; border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / .3); background: rgb(0 0 0 / .15); color: #F3EEE2; cursor: pointer; font-size: 1rem;
+    opacity: 0; transition: opacity .3s; }
+  .lv:hover .lv__replay, .lv__replay:focus-visible { opacity: 1; }
+
+  /* Estado inicial (con JavaScript): el ave espera fuera de cuadro y el nombre aún no aparece */
+  :global(html:not(.no-js)) .lv:not(.is-in) .lv__fly { opacity: 0; }
+  :global(html:not(.no-js)) .lv:not(.is-in) .lv__text { opacity: 0; }
+
+  /* Secuencia: aparece el nombre → el ave vuela, aletea y aterriza → respira */
+  .lv.is-in .lv__text { animation: lv-text .9s var(--ease-out, ease-out) both; }
+  .lv.is-in .lv__sun { animation: lv-sun 3.2s ease-out both; }
+  .lv.is-in .lv__fly { animation: lv-fly 2.3s cubic-bezier(.22, .7, .3, 1) .55s both; }
+  .lv.is-in .lv__flap { animation: lv-flap .17s ease-in-out .55s 12 alternate both; }
+  .lv.is-in .lv__land { animation: lv-land .5s ease-out 2.8s both; }
+  .lv.is-in .lv__idle { animation: lv-idle 4.5s ease-in-out 3.6s infinite; }
+
+  @keyframes lv-text { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+  @keyframes lv-sun { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+  @keyframes lv-fly {
+    0%   { opacity: 0; transform: translate(330%, -170%) rotate(-14deg) scale(.55); }
+    12%  { opacity: 1; }
+    40%  { transform: translate(190%, -125%) rotate(-6deg) scale(.72); }
+    68%  { transform: translate(70%, -55%) rotate(5deg) scale(.9); }
+    88%  { transform: translate(6%, 6%) rotate(2deg) scale(1); }
+    100% { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+  }
+  @keyframes lv-flap { from { transform: scaleY(1) skewX(0); } to { transform: scaleY(.62) skewX(-6deg); } }
+  @keyframes lv-land { 0% { transform: scale(1.08, .86); } 45% { transform: scale(.97, 1.05); } 100% { transform: none; } }
+  @keyframes lv-idle { 0%, 70%, 100% { transform: rotate(0); } 78% { transform: rotate(-4deg) translateY(-2%); } 86% { transform: rotate(2deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lv.is-in .lv__fly, .lv.is-in .lv__flap, .lv.is-in .lv__land, .lv.is-in .lv__idle, .lv.is-in .lv__text, .lv.is-in .lv__sun { animation: none; }
+    :global(html:not(.no-js)) .lv:not(.is-in) .lv__fly, :global(html:not(.no-js)) .lv:not(.is-in) .lv__text { opacity: 1; }
+    .lv__replay { display: none; }
+  }
+</style>

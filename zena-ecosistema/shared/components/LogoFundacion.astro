@@ -1,0 +1,12 @@
+---
+// Logo oficial completo (con el loro), sin animación. Indicación del cliente, 9-nov-2026.
+interface Props { class?: string; alt?: string }
+const { class: cls = '', alt = 'The Adventurers Children Foundation' } = Astro.props;
+---
+<div class={`logo-fund ${cls}`}>
+  <img src="/img/logo-fundacion-900.webp" srcset="/img/logo-fundacion-400.webp 400w, /img/logo-fundacion-900.webp 900w" sizes="(max-width:860px) 80vw, 40vw" alt={alt} width="900" height="402" loading="lazy" />
+</div>
+<style>
+  .logo-fund { background: #FBF7EE; border-radius: var(--r-lg); padding: clamp(1.25rem, 4vw, 2.5rem); display: grid; place-items: center; }
+  .logo-fund img { width: 100%; max-width: 520px; height: auto; display: block; }
+</style>

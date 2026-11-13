@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="t d">
+  <title id="t">Cuidado de fuentes hídricas en familia</title>
+  <desc id="d">Ilustración de una familia sembrando árboles nativos a la orilla de una quebrada en las montañas.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3E7CC"/><stop offset="1" stop-color="#E7EFE0"/></linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9FC9D9"/><stop offset="1" stop-color="#2D5E78"/></linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <circle cx="140" cy="110" r="36" fill="#F2BE5C"/>
+  <path d="M0 250 L140 160 L260 230 L380 150 L520 240 L640 170 L800 240 L800 600 L0 600Z" fill="#B9CBB0"/>
+  <path d="M0 330 Q200 260 400 320 T800 300 L800 600 L0 600Z" fill="#8FAE84"/>
+  <path d="M0 400 Q220 350 420 400 T800 390 L800 600 L0 600Z" fill="#6E9A5E"/>
+  <!-- quebrada -->
+  <path d="M556 296 Q470 360 520 410 Q580 470 470 520 Q400 555 420 600 L560 600 Q540 560 600 520 Q700 450 620 400 Q570 360 562 296Z" fill="url(#water)"/>
+  <g stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity=".7" fill="none">
+    <path d="M555 330 q-20 30 5 60"/><path d="M560 430 q40 30 -20 70"/><path d="M500 545 q-15 20 5 40"/>
+  </g>
+  <!-- piedras -->
+  <g fill="#9A9483"><ellipse cx="470" cy="470" rx="22" ry="12"/><ellipse cx="630" cy="455" rx="18" ry="10"/><ellipse cx="455" cy="585" rx="26" ry="12"/></g>
+  <!-- árboles sembrados -->
+  <g>
+    <rect x="236" y="430" width="6" height="40" fill="#6B4E32"/><circle cx="239" cy="420" r="22" fill="#3F6B3A"/>
+    <rect x="336" y="452" width="6" height="34" fill="#6B4E32"/><circle cx="339" cy="444" r="18" fill="#4E7F3F"/>
+    <rect x="690" y="420" width="6" height="44" fill="#6B4E32"/><circle cx="693" cy="408" r="24" fill="#3F6B3A"/>
+  </g>
+  <!-- familia: adulto -->
+  <g transform="translate(120 400)">
+    <circle cx="40" cy="20" r="18" fill="#8A5A3C"/>
+    <path d="M22 18 Q40 -6 58 18 Q52 6 40 6 Q28 6 22 18Z" fill="#3A2A20"/>
+    <path d="M18 120 Q16 60 40 44 Q64 60 62 120Z" fill="#B5402C"/>
+    <path d="M62 70 L100 96" stroke="#8A5A3C" stroke-width="10" stroke-linecap="round"/>
+    <rect x="24" y="118" width="12" height="44" rx="5" fill="#2D3B4E"/><rect x="44" y="118" width="12" height="44" rx="5" fill="#2D3B4E"/>
+  </g>
+  <!-- familia: niña regando -->
+  <g transform="translate(200 470)">
+    <circle cx="30" cy="14" r="13" fill="#8A5A3C"/>
+    <path d="M17 12 Q30 -6 43 12 Q38 4 30 4 Q22 4 17 12Z" fill="#3A2A20"/>
+    <path d="M14 80 Q12 40 30 30 Q48 40 46 80Z" fill="#F2C14E"/>
+    <rect x="18" y="78" width="9" height="30" rx="4" fill="#2D3B4E"/><rect x="33" y="78" width="9" height="30" rx="4" fill="#2D3B4E"/>
+    <path d="M46 48 L60 56" stroke="#8A5A3C" stroke-width="7" stroke-linecap="round"/>
+    <!-- regadera -->
+    <rect x="56" y="48" width="22" height="18" rx="3" fill="#2D5E78"/><path d="M78 52 L92 44" stroke="#2D5E78" stroke-width="4" stroke-linecap="round"/>
+    <g fill="#9FC9D9"><circle cx="96" cy="50" r="2.5"/><circle cx="99" cy="58" r="2.5"/><circle cx="94" cy="64" r="2.5"/></g>
+  </g>
+  <!-- niño sembrando -->
+  <g transform="translate(290 488)">
+    <circle cx="26" cy="12" r="12" fill="#8A5A3C"/>
+    <path d="M14 10 Q26 -6 38 10 Q32 4 26 4 Q20 4 14 10Z" fill="#3A2A20"/>
+    <path d="M10 66 Q8 34 26 26 Q44 34 42 66Z" fill="#5F7D4C"/>
+    <rect x="14" y="64" width="8" height="26" rx="4" fill="#2D3B4E"/><rect x="28" y="64" width="8" height="26" rx="4" fill="#2D3B4E"/>
+    <path d="M42 44 L56 60" stroke="#8A5A3C" stroke-width="6" stroke-linecap="round"/>
+    <path d="M58 62 q4 -14 12 -18 q-2 10 -12 18Z" fill="#4E7F3F"/>
+  </g>
+  <!-- gotas: cuidar el agua -->
+  <g fill="#2D5E78" opacity=".85">
+    <path d="M700 150 q14 22 0 30 q-14 -8 0 -30Z"/><path d="M735 185 q10 16 0 22 q-10 -6 0 -22Z"/>
+  </g>
+</svg>

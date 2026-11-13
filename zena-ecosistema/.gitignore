@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.DS_Store
+# Capturas crudas de la auditoría (HTML e imágenes originales del sitio Squarespace)
+_audit/html/
+_audit/img/
+revision-loudbrandco.zip

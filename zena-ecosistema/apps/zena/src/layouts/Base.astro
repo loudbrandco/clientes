@@ -1,0 +1,69 @@
+---
+import '../../../../shared/styles/base.css';
+import '../styles/theme.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Consent from '../../../../shared/components/Consent.astro';
+import { GA_ZENA, FUNDACION_URL, STAGING } from '../../../../shared/sites.mjs';
+import { type Lang, altPath, href } from '../../../../shared/i18n';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  jsonld?: Record<string, unknown> | Record<string, unknown>[];
+  lang?: Lang;
+}
+const { title, description, image = '/img/zena-arbol-1500.webp', jsonld, lang = 'es' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const fullTitle = title === 'Inicio' ? (lang === 'en' ? 'Zena Ayoub · Author of Las Aventuras en Turín' : 'Zena Ayoub · Autora de Las Aventuras en Turín') : `${title} · Zena Ayoub`;
+const alt = { es: new URL(altPath(Astro.url.pathname, 'es'), Astro.site).href, en: new URL(altPath(Astro.url.pathname, 'en'), Astro.site).href };
+const ogImage = new URL(image, Astro.site).href;
+const baseLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Zena Ayoub',
+  url: Astro.site?.href,
+  jobTitle: 'Autora y creadora de Las Aventuras en Turín',
+  sameAs: ['https://www.instagram.com/lasaventurasenturin/', 'https://www.youtube.com/@LasAventurasenTurin'],
+  founder: { '@type': 'NGO', name: 'The Adventurers Children Foundation', url: FUNDACION_URL },
+};
+const ld = jsonld ? [baseLd, ...(Array.isArray(jsonld) ? jsonld : [jsonld])] : [baseLd];
+---
+<!doctype html>
+<html lang={lang} class="no-js" data-ga={GA_ZENA || undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {!Astro.url.pathname.startsWith("/404") && <link rel="canonical" href={canonical} />}
+    {STAGING && <meta name="robots" content="noindex, nofollow" />}
+    {!Astro.url.pathname.includes('404') && <Fragment><link rel="alternate" hreflang="es" href={alt.es} /><link rel="alternate" hreflang="en" href={alt.en} /><link rel="alternate" hreflang="x-default" href={alt.es} /></Fragment>}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Zena Ayoub" />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_CO'} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#F4EDE0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">{lang === 'en' ? 'Skip to content' : 'Saltar al contenido'}</a>
+    <Header lang={lang} />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <Consent gaId={GA_ZENA} privacyHref={href(lang, '/privacidad')} lang={lang} />
+    <script src="../../../../shared/scripts/site.js"></script>
+  </body>
+</html>

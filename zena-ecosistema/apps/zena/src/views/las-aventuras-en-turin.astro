@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Img from '../../../../shared/components/Img.astro';
+import Split from '../../../../shared/components/Split.astro';
+import { libros, plataformasAudio, audiolibros, episodios } from '../data/contenido';
+import { turinSecciones } from '../data/nav';
+import { LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href, t } from '../../../../shared/i18n';
+import '../styles/turin.css';
+const { lang } = Astro.props as { lang: Lang };
+const imgs: Record<string, string> = { libros: 'ilus-portada', audiolibros: 'ilus-campamento', video: 'ilus-chimenea' };
+---
+<Base lang={lang} title="Las Aventuras en Turín" image="/img/ilus-portada-1200.webp" description={t(lang,
+  'Las Aventuras en Turín: libros, audiolibros y video de Zena Ayoub para niños y familias.',
+  'Las Aventuras en Turín: books, audiobooks and video by Zena Ayoub for children and families.')}
+  jsonld={{ '@context': 'https://schema.org', '@type': 'BookSeries', name: 'Las Aventuras en Turín', author: { '@type': 'Person', name: 'Zena Ayoub' }, inLanguage: ['es', 'en'] }}>
+
+  <PageHead num="02" eyebrow={t(lang, 'Universo narrativo', 'Story universe')} lines={['Las Aventuras', '<em class="wonk">en Turín</em>']}
+    lead={t(lang,
+      'Es un proyecto no estimulante creado por Zena Ayoub, que combina cuentos, audiolibros y contenido audiovisual para niños y familias.',
+      'A calm, non-overstimulating project created by Zena Ayoub that combines stories, audiobooks and audiovisual content for children and families.')} />
+
+  <section class="wrap grid-12 intro">
+    <div class="intro__logo" data-reveal><Img name="logo-turin" widths={[300, 600]} sizes="240px" alt="Las Aventuras en Turín" /></div>
+    <div class="prose lead" style="grid-column: 5 / span 8" data-reveal>
+      <p>{t(lang,
+        'En lo alto de las montañas de un pequeño pueblo, se encuentra Turín, una finca encantadora donde la infancia de María cobra vida entre árboles, juegos improvisados y el amor de una familia unida.',
+        'High in the mountains of a small town lies Turín, an enchanting farm where María’s childhood comes to life among trees, spontaneous games and the love of a close-knit family.')}</p>
+      <p>{t(lang,
+        'Es una serie que cuenta con un total de 5 libros, siendo Las Aventuras en Turín el primero: historias reales y mágicas inspiradas en la naturaleza, los lazos familiares y la curiosidad infantil.',
+        'The series has five books in total, with Las Aventuras en Turín as the first: real and magical stories inspired by nature, family bonds and children’s curiosity.')}</p>
+    </div>
+  </section>
+
+  <section class="wrap shelf">
+    <div class="shelf__head">
+      <p class="eyebrow" data-reveal>{t(lang, 'La serie', 'The series')}</p>
+      <a class="link" href={href(lang, '/las-aventuras-en-turin/libros')} data-reveal>{t(lang, 'Ver todos los libros →', 'See all books →')}</a>
+    </div>
+    <div class="shelf__row">
+      {libros.map((l, i) => (
+        <a class="shelf__book" href={href(lang, '/las-aventuras-en-turin/libros')} data-reveal style={`--d:${i * 80}ms`}>
+          <div class="cover cover--real"><Img name={l.portada} widths={[300, 600]} sizes="(max-width:860px) 45vw, 22vw" alt={t(lang, `Portada de ${l.titulo}`, `Cover of ${l.titulo}`)} /></div>
+          <span>{l.titulo}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="tabs">
+      {turinSecciones.map((sc) => (
+        <a class="tab" href={href(lang, sc.path)} data-reveal>
+          <Img name={imgs[sc.id]} widths={[600]} sizes="(max-width:860px) 30vw, 22vw" alt="" />
+          <span>{sc[lang]} →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section band--olive">
+    <div class="wrap">
+      <Split class="h1" lines={lang === 'en' ? ['Because the best adventures', '<em class="wonk">happen as a family.</em>'] : ['Porque las mejores aventuras', '<em class="wonk">suceden en familia.</em>']} />
+    </div>
+  </section>
+
+  <section class="section wrap grid-12 tena">
+    <div class="tena__img" data-reveal><Img name="ilus-finca" widths={[600, 1200]} sizes="(max-width:860px) 92vw, 40vw" alt={t(lang, 'Ilustración de la casa de la finca Turín', 'Illustration of the Turín farmhouse')} /></div>
+    <div class="tena__text">
+      <p class="eyebrow" data-reveal>Tena, Cundinamarca</p>
+      <h2 class="h2" data-reveal>{t(lang,
+        '¿Sabías que este es el pueblo donde realmente está ubicado Las Aventuras en Turín en Colombia?',
+        'Did you know this is the town in Colombia where Las Aventuras en Turín really takes place?')}</h2>
+      <p class="lead" data-reveal>{t(lang, 'Y es aquí donde desarrollamos nuestros programas.', 'And it’s where we run our programs.')}</p>
+      <a class="link ext" href={LINKS.tena} target="_blank" rel="noopener" data-reveal>{t(lang, 'Conoce más sobre Tena', 'Learn more about Tena')}</a>
+    </div>
+  </section>
+
+  <script>
+    // Enlaces antiguos con #libros, #audiolibros o #video → su página
+    const h = location.hash.slice(1);
+    if (['libros', 'audiolibros', 'video'].includes(h)) location.replace(location.pathname.replace(/\/?$/, '/') + h + '/');
+  </script>
+</Base>

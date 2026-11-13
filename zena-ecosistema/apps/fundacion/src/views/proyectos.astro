@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { proyectos, aliadosTexto, apoyoLibro } from '../data/fundacion';
+import { type Lang, href, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Proyectos', 'Projects')} description={L('Proyectos de The Adventurers Children Foundation en Tena, Cundinamarca: protección de la cascada El Tambo, cuidado de fuentes hídricas con familias locales y el libro Las Mascotas de Michel y María.', 'The Adventurers Children Foundation projects in Tena, Cundinamarca: protecting the El Tambo waterfall, caring for water sources with local families and the book Las Mascotas de Michel y María.')}>
+  <PageHead lang={lang} seccion={L('Qué hacemos · Proyectos', 'What we do · Projects')} lines={lang === 'en' ? ['Every experience', '<em class="it-accent">becomes conservation.</em>'] : ['Cada experiencia', '<em class="it-accent">se convierte en conservación.</em>']}
+    lead={L('Financiamos y apoyamos proyectos ecológicos en Tena, Cundinamarca, el pueblo donde está Turín.', 'We fund and support ecological projects in Tena, Cundinamarca, the town where Turín is.')} />
+
+  <section class="wrap projs">
+    {proyectos.map((p, i) => (
+      <article class="proj" id={p.slug} data-reveal style={`--d:${i * 80}ms`}>
+        <div class="pcard__img"><img src={p.img} alt={p.titulo[lang]} width="800" height="600" loading="lazy" /></div>
+        <span class="tag tag--desarrollo">{p.estado[lang]}</span>
+        <h2 class="h3">{p.titulo[lang]}</h2>
+        <p>{p.texto[lang]}</p>
+        <p class="small muted">{L('Fuente', 'Source')}: <a class="link" href={p.fuente.url} target="_blank" rel="noopener">{p.fuente.medio}, {p.fuente.fecha[lang]} ↗</a></p>
+      </article>
+    ))}
+  </section>
+  <section class="section--tight wrap">
+    <p class="small muted" data-reveal>{L('Las imágenes de los proyectos son ilustraciones, no fotografías del lugar.', 'Project images are illustrations, not photographs of the site.')}</p>
+    <div class="note" data-reveal>{apoyoLibro.texto[lang]} <a class="link" href={apoyoLibro.fuente.url} target="_blank" rel="noopener">{apoyoLibro.fuente.medio}, {apoyoLibro.fuente.fecha[lang]} ↗</a></div>
+    <p class="lead" data-reveal style="margin-top: var(--sp-5)">{aliadosTexto[lang]}</p>
+    <div class="cta-row" style="margin-top: var(--sp-6)" data-reveal>
+      <a class="btn btn--accent" href={href(lang, '/donar')}>{L('Apoya estos proyectos', 'Support these projects')} <span class="arrow">→</span></a>
+      <a class="btn btn--ghost" href={href(lang, '/alianzas')}>{L('Alianzas empresariales', 'Corporate partnerships')}</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .projs { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-6) var(--sp-5); }
+  .proj { display: grid; gap: var(--sp-3); align-content: start; justify-items: start; scroll-margin-top: 130px; }
+  .proj .h3, .proj p { margin: 0; }
+    @media (max-width: 600px) { .projs { grid-template-columns: 1fr; } }
+</style>

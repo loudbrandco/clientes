@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Form from '../components/Form.astro';
+import { LINKS, ZENA_URL } from '../../../../shared/sites.mjs';
+import { sedes } from '../data/fundacion';
+import { UBICACION } from '../data/nav';
+import { type Lang, ext, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Contacto', 'Contact')} description={L('Contacta a The Adventurers Children Foundation, con sede en Miami, Florida: donaciones, voluntariado, alianzas y prensa.', 'Contact The Adventurers Children Foundation, based in Miami, Florida: donations, volunteering, partnerships and press.')}>
+  <PageHead lang={lang} seccion={L('Contacto', 'Contact')} lines={[L('Hablemos.', 'Let’s talk.')]} lead={L('Para donaciones, voluntariado, alianzas, prensa o cualquier pregunta sobre la fundación.', 'For donations, volunteering, partnerships, press or any question about the foundation.')} />
+
+  <section class="section wrap grid-12">
+    <div style="grid-column: 1 / span 7" data-reveal>
+      <Form lang={lang} asunto={L('Contacto fundación', 'Foundation contact')} boton={L('Enviar mensaje', 'Send message')}>
+        <div class="row2">
+          <div class="field"><label for="c-nombre">{L('Nombre', 'Name')}</label><input class="input" id="c-nombre" name="nombre" required autocomplete="name" /></div>
+          <div class="field"><label for="c-email">{L('Correo electrónico', 'Email')}</label><input class="input" id="c-email" name="email" type="email" required autocomplete="email" /></div>
+        </div>
+        <div class="field"><label for="c-tema">{L('Tema', 'Topic')}</label>
+          <select class="select" id="c-tema" name="tema"><option>{L('Donaciones', 'Donations')}</option><option>{L('Voluntariado', 'Volunteering')}</option><option>{L('Alianzas empresariales', 'Corporate partnerships')}</option><option>{L('Prensa', 'Press')}</option><option>{L('Otro', 'Other')}</option></select>
+        </div>
+        <div class="field"><label for="c-msg">{L('Mensaje', 'Message')}</label><textarea class="textarea" id="c-msg" name="mensaje" required></textarea></div>
+      </Form>
+    </div>
+    <aside class="aside" style="grid-column: 9 / span 4" data-reveal>
+      <dl class="kv" style="grid-template-columns: 1fr">
+        <dt>{L('Fundación', 'Foundation')}</dt><dd><a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a></dd>
+        <dt>{L('Sede', 'Based in')}</dt><dd>{UBICACION[lang]}</dd>
+        <dt>{L('Programas', 'Programs')}</dt><dd>Tena, Cundinamarca, Colombia</dd>
+        <dt>Zena Ayoub · Las Aventuras en Turín</dt><dd><a class="link" href={`mailto:${LINKS.emailZena}`}>{LINKS.emailZena}</a></dd>
+        <dt>Instagram</dt><dd><a class="link" href={LINKS.instagram} target="_blank" rel="noopener">@lasaventurasenturin ↗</a></dd>
+        <dt>{L('Sitio de Zena Ayoub', 'Zena Ayoub’s site')}</dt><dd><a class="link" href={ext(lang, ZENA_URL)}>zenaayoub.com ↗</a></dd>
+      </dl>
+    </aside>
+  </section>
+
+  <section class="section wrap where">
+    <p class="eyebrow" data-reveal>{L('Dónde estamos', 'Where we are')}</p>
+    <h2 class="h2" data-reveal>{L('Estamos en Tena y en Miami.', 'We are in Tena and in Miami.')}</h2>
+    <div class="where__grid">
+      {sedes.map((m) => (
+        <article class="where__item" data-reveal>
+          <div>
+            <p class="eyebrow">{m.rol[lang]}</p>
+            <h3 class="h3">{m.titulo} <span class="muted">· {m.pais[lang]}</span></h3>
+          </div>
+          <figure class="mapa">
+            <iframe src={m.mapa} title={`${L('Mapa de Google de', 'Google map of')} ${m.titulo}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </figure>
+          <a class="link small" href={m.enlace} target="_blank" rel="noopener">{L('Abrir en Google Maps', 'Open in Google Maps')} ↗</a>
+        </article>
+      ))}
+    </div>
+  </section>
+</Base>
+<style>
+  .where { display: grid; gap: var(--sp-4); }
+  .where__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6) var(--sp-5); margin-top: var(--sp-5); }
+  .where__item { display: grid; gap: var(--sp-4); align-content: start; justify-items: start; }
+  .where__item .h3 { margin: var(--sp-2) 0 0; }
+  .where__item .mapa { margin: 0; width: 100%; }
+  .where__foto { margin: 0; width: 100%; aspect-ratio: 4 / 3; border-radius: var(--r-lg); overflow: hidden; }
+  .where__foto :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+  @media (max-width: 760px) { .where__grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Img from '../../../../shared/components/Img.astro';
+import { programas, comoLoHacemos, cierre } from '../data/fundacion';
+import { type Lang, href, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Programas', 'Programs')} description={L('Programas de The Adventurers Children Foundation: experiencias familiares, educación ambiental, conservación, reforestación, fuentes hídricas y voluntariado corporativo en Tena, Colombia.', 'The Adventurers Children Foundation programs: family experiences, environmental education, conservation, reforestation, water sources and corporate volunteering in Tena, Colombia.')}>
+  <PageHead lang={lang} seccion={L('Qué hacemos · Programas', 'What we do · Programs')} lines={lang === 'en' ? ['Every adventure', '<em class="it-accent">becomes action.</em>'] : ['Cada aventura', '<em class="it-accent">se convierte en acción.</em>']}
+    lead={L('Diseñamos experiencias familiares que reconectan a padres e hijos con la naturaleza y transforman eventos en impacto ambiental real.', 'We design family experiences that reconnect parents and children with nature and turn events into real environmental impact.')}>
+    <div class="cta-row" data-reveal style="--d:400ms"><a class="btn btn--ghost" href={href(lang, '/proyectos')}>{L('Ver proyectos', 'See projects')} <span class="arrow">→</span></a></div>
+  </PageHead>
+
+  <section class="wrap progs">
+    {programas.map((p, i) => (
+      <article class="prog" id={p.slug} data-reveal>
+        <div class={`pcard__img${p.img === 'ilus-finca' ? ' pcard__img--abajo' : ''}`}>
+          {p.img.startsWith('/') ? <img src={p.img} alt="" width="800" height="600" loading="lazy" /> : <Img name={p.img} widths={p.img === 'ilus-boceto-montana' ? [800] : [600]} sizes="(max-width:600px) 92vw, (max-width:960px) 45vw, 30vw" alt="" />}
+        </div>
+        <span class="prog__n">{String(i + 1).padStart(2, '0')}</span>
+        <div class="prog__body">
+          <h2 class="h3">{p.titulo[lang]}</h2>
+          <p>{p.texto[lang]}</p>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <section class="section band">
+    <div class="wrap grid-12">
+      <div style="grid-column: 1 / span 5"><h2 class="h2" data-reveal>{L('Nuestras experiencias:', 'Our experiences:')}</h2></div>
+      <ul class="ticks" role="list" style="grid-column: 7 / span 6">{comoLoHacemos.map((c) => <li data-reveal>{c[lang]}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section--tight wrap">
+    {cierre.map((c, i) => <p class="h3" data-reveal style={`--d:${i * 90}ms; margin: 0 0 var(--sp-2)`}>{c[lang]}</p>)}
+    <div class="cta-row" style="margin-top: var(--sp-6)" data-reveal>
+      <a class="btn btn--accent" href={href(lang, '/donar')}>{L('Apoya los programas', 'Support the programs')} <span class="arrow">→</span></a>
+      <a class="btn btn--ghost" href={href(lang, '/voluntariado')}>{L('Sé voluntario', 'Volunteer')}</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .progs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6) var(--sp-5); padding-bottom: var(--sp-8); }
+  .prog { display: grid; gap: var(--sp-4); align-content: start; scroll-margin-top: 130px;  }
+  .prog__n { font-family: var(--font-display); font-style: italic; font-size: var(--fs-2xl); color: var(--accent); line-height: 1; }
+  .prog__body p { margin: var(--sp-2) 0 0; }
+  .prog__body .h3 { margin: 0; }
+  .ticks { display: grid; gap: var(--sp-3); }
+  .ticks li { padding-left: 1.8em; position: relative; font-size: var(--fs-lg); }
+  .ticks li::before { content: ''; position: absolute; left: 0; top: .55em; width: .8em; height: .8em; border-radius: 50%; background: var(--moss); }
+  @media (max-width: 960px) { .progs { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .progs { grid-template-columns: 1fr; } }
+</style>

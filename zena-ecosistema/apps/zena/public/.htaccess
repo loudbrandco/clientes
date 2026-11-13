@@ -1,0 +1,35 @@
+# zenaayoub.com — configuración para hosting Apache (GoDaddy cPanel)
+Options -Indexes
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# La fundación tiene su propio dominio (theadventurerscf.org). Si su carpeta queda dentro de public_html,
+# no se le aplican estas reglas, y cualquier entrada por zenaayoub.com/fundacion o fundacion.zenaayoub.com se envía allá.
+RewriteCond %{HTTP_HOST} ^(www\.)?theadventurerscf\.org$ [NC]
+RewriteRule ^ - [L]
+RewriteCond %{HTTP_HOST} ^fundacion\.zenaayoub\.com$ [NC]
+RewriteRule ^(.*)$ https://theadventurerscf.org/$1 [L,R=301]
+RewriteRule ^fundacion/(.*)$ https://theadventurerscf.org/$1 [L,R=301]
+# Forzar HTTPS y dominio canónico con www
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule ^(.*)$ https://www.zenaayoub.com/$1 [L,R=301]
+
+# URLs del sitio anterior (Squarespace) → nuevas URLs. Conserva el SEO acumulado.
+RewriteRule ^home/?$ / [L,R=301]
+RewriteRule ^programs/?$ /las-aventuras-en-turin/ [L,R=301]
+RewriteRule ^contact/?$ /contacto/ [L,R=301]
+RewriteRule ^cart/?$ /las-aventuras-en-turin/ [L,R=301]
+RewriteRule ^the-adventurers-children-foundation/?$ https://theadventurerscf.org/ [L,R=301]
+RewriteRule ^donate/?$ https://theadventurerscf.org/donar/ [L,R=301]
+</IfModule>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Strict-Transport-Security "max-age=31536000"
+<FilesMatch "\.(webp|svg|woff2|css|js)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+</IfModule>

@@ -1,0 +1,55 @@
+# Zena Ayoub (zenaayoub.com) + The Adventurers Children Foundation (theadventurerscf.org)
+# Despliegue automático a GoDaddy (cPanel) por FTP cuando cambia la carpeta zena-ecosistema/.
+# Desactivado por defecto: cambia "if: false" por "if: true" cuando estén creados los secretos
+# ZENA_FTP_SERVER, ZENA_FTP_USERNAME y ZENA_FTP_PASSWORD (ver zena-ecosistema/docs/DESPLIEGUE-GODADDY.md).
+name: Zena · Desplegar en GoDaddy
+
+on:
+  push:
+    branches: [main]
+    paths: ['zena-ecosistema/**', '.github/workflows/zena-deploy.yml']
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: false
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: zena-ecosistema
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: zena-ecosistema/package-lock.json
+      - run: npm ci
+      - run: npm run build
+        env:
+          GA_ZENA: ${{ secrets.GA_ZENA }}
+          GA_FUNDACION: ${{ secrets.GA_FUNDACION }}
+          FORM_ENDPOINT_ZENA: ${{ secrets.FORM_ENDPOINT_ZENA }}
+          FORM_ENDPOINT_FUNDACION: ${{ secrets.FORM_ENDPOINT_FUNDACION }}
+          PUBLIC_STRIPE_KEY: ${{ secrets.PUBLIC_STRIPE_KEY }}
+      - run: npm run check:links
+
+      - name: Subir zenaayoub.com
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.ZENA_FTP_SERVER }}
+          username: ${{ secrets.ZENA_FTP_USERNAME }}
+          password: ${{ secrets.ZENA_FTP_PASSWORD }}
+          local-dir: zena-ecosistema/apps/zena/dist/
+          server-dir: public_html/
+          exclude: |
+            theadventurerscf.org/**
+
+      - name: Subir theadventurerscf.org
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.ZENA_FTP_SERVER }}
+          username: ${{ secrets.ZENA_FTP_USERNAME }}
+          password: ${{ secrets.ZENA_FTP_PASSWORD }}
+          local-dir: zena-ecosistema/apps/fundacion/dist/
+          server-dir: public_html/theadventurerscf.org/

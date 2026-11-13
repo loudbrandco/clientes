@@ -1,0 +1,34 @@
+{
+  "redirects": [
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/programs",
+      "destination": "/las-aventuras-en-turin/",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/contacto/",
+      "permanent": true
+    },
+    {
+      "source": "/cart",
+      "destination": "/las-aventuras-en-turin/",
+      "permanent": true
+    },
+    {
+      "source": "/the-adventurers-children-foundation",
+      "destination": "https://theadventurerscf.org/",
+      "permanent": true
+    },
+    {
+      "source": "/donate",
+      "destination": "https://theadventurerscf.org/donar/",
+      "permanent": true
+    }
+  ]
+}

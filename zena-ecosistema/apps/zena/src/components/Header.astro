@@ -1,0 +1,40 @@
+---
+import { nav } from '../data/nav';
+import { FUNDACION_URL } from '../../../../shared/sites.mjs';
+import { type Lang, href, ext, altPath } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (p: string) => { const h = href(lang, p); return path === h || path.startsWith(h + '/') ? 'page' : undefined; };
+const otro = lang === 'en' ? 'es' : 'en';
+const langHref = Astro.url.pathname.includes('404') ? href(otro, '/') : altPath(Astro.url.pathname, otro);
+---
+<header class="site-header" data-header>
+  <div class="wrap bar">
+    <a href={href(lang, '/')} class="brand" aria-label={lang === 'en' ? 'Zena Ayoub, home' : 'Zena Ayoub, inicio'}>
+      <span class="name">Zena Ayoub</span>
+      <span class="sig">{lang === 'en' ? 'Stories · Family · Nature' : 'Historias · Familia · Naturaleza'}</span>
+    </a>
+    <nav class="nav" aria-label={lang === 'en' ? 'Main' : 'Principal'}>
+      {nav.map((l) => <a href={href(lang, l.path)} aria-current={isCurrent(l.path)}>{l[lang]}</a>)}
+      <a href={ext(lang, FUNDACION_URL)} class="nav-fund" data-track="ir_fundacion" aria-label="The Adventurers Children Foundation">
+        <img src="/img/logo-fundacion-recorte-440.webp" alt="The Adventurers Children Foundation" width="440" height="199" />
+      </a>
+      <a class="lang" href={langHref} hreflang={otro} lang={otro} aria-label={otro === 'en' ? 'English version' : 'Versión en español'}>{otro.toUpperCase()}</a>
+    </nav>
+    <div class="bar__mobile">
+      <a class="lang" href={langHref} hreflang={otro} lang={otro}>{otro.toUpperCase()}</a>
+      <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="menu-movil">{lang === 'en' ? 'Menu' : 'Menú'}</button>
+    </div>
+  </div>
+</header>
+<div class="drawer" id="menu-movil" data-nav-drawer>
+  <nav aria-label={lang === 'en' ? 'Mobile menu' : 'Menú móvil'}>
+    <ol>
+      <li><a href={href(lang, '/')}>{lang === 'en' ? 'Home' : 'Inicio'}</a></li>
+      {nav.map((l) => <li><a href={href(lang, l.path)}>{l[lang]}</a></li>)}
+      <li><a href={ext(lang, FUNDACION_URL)}>The Adventurers Children Foundation</a></li>
+      <li><a href={href(lang, '/contacto')}>{lang === 'en' ? 'Contact' : 'Contacto'}</a></li>
+    </ol>
+  </nav>
+</div>

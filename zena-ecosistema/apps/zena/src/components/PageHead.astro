@@ -1,0 +1,11 @@
+---
+import Split from '../../../../shared/components/Split.astro';
+interface Props { num: string; eyebrow: string; lines: string[]; lead?: string }
+const { num, eyebrow, lines, lead } = Astro.props;
+---
+<header class="page-head wrap">
+  <p class="eyebrow" data-reveal="fade"><span class="num">{num}</span>&nbsp; {eyebrow}</p>
+  <Split as="h1" class="h1" lines={lines} />
+  {lead && <p class="lead" data-reveal style="--d:300ms">{lead}</p>}
+  <slot />
+</header>

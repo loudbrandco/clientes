@@ -1,0 +1,24 @@
+---
+// Formulario de la fundación. Envía al endpoint configurado (FORM_ENDPOINT_FUNDACION)
+// o, si no hay endpoint, abre el correo del visitante con los datos ya escritos.
+import { FORM_ENDPOINT_FUNDACION, LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href } from '../../../../shared/i18n';
+interface Props { asunto: string; boton: string; lang: Lang }
+const { asunto, boton, lang } = Astro.props;
+---
+<form class="fform" data-form data-endpoint={FORM_ENDPOINT_FUNDACION} data-mailto={LINKS.emailFundacion} data-subject={asunto}>
+  <input type="hidden" name="formulario" value={asunto} />
+  <slot />
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+  <label class="check"><input type="checkbox" name="consentimiento" required /> {lang === 'en'
+    ? <span>I authorize The Adventurers Children Foundation to process my personal data to handle this request, under its <a class="link" href={href(lang, '/privacidad')}>data policy</a>.</span>
+    : <span>Autorizo a The Adventurers Children Foundation a tratar mis datos personales para gestionar esta solicitud, según la <a class="link" href={href(lang, '/privacidad')}>política de tratamiento de datos</a>.</span>}</label>
+  <button class="btn btn--accent" type="submit">{boton} <span class="arrow">→</span></button>
+  <p class="form-status" role="status" aria-live="polite"></p>
+</form>
+<style>
+  .fform { display: grid; gap: var(--sp-5); background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(1.5rem, 4vw, 3rem); }
+  .fform .btn { justify-self: start; }
+  .fform :global(.row2) { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+  @media (max-width: 600px) { .fform :global(.row2) { grid-template-columns: 1fr; } }
+</style>

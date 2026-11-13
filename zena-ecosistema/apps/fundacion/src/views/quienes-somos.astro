@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../../../../shared/components/Img.astro';
+import { ZENA_URL } from '../../../../shared/sites.mjs';
+import { equipo, zena, puente, futuro, porQue, educacion, comoLoHacemos, aliadosTexto, activamos, movilizamos, cierre, certificada, dondeTrabajamos } from '../data/fundacion';
+import { UBICACION } from '../data/nav';
+import { type Lang, href, ext, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Quiénes somos', 'About us')} description={L('The Adventurers Children Foundation, fundada por Zena Ayoub: organización sin fines de lucro 501(c)(3) con sede en Miami y programas en Tena, Colombia.', 'The Adventurers Children Foundation, founded by Zena Ayoub: a 501(c)(3) nonprofit based in Miami with programs in Tena, Colombia.')}>
+
+  <!-- 1. Zena Ayoub primero -->
+  <section class="wrap grid-12 founder">
+    <figure class="founder__img">
+      <div class="frame"><Img name="zena-arbol" widths={[600, 1000]} sizes="(max-width:860px) 92vw, 38vw" alt={L('Zena Ayoub, fundadora, junto a un árbol con su libro', 'Zena Ayoub, founder, next to a tree with her book')} /></div>
+    </figure>
+    <div class="founder__text">
+      <nav class="crumbs small" aria-label={L('Ruta', 'Breadcrumb')}><a class="link" href={href(lang, '/')}>{L('Inicio', 'Home')}</a> / {L('Quiénes somos', 'About us')}</nav>
+      <p class="eyebrow" data-reveal>{L('Quiénes somos · La fundadora', 'About us · The founder')}</p>
+      <h1 class="h1" data-reveal>Zena Ayoub</h1>
+      <p class="lead" data-reveal>{zena[1][lang]}</p>
+      <div class="cta-row" data-reveal><a class="btn btn--ghost" href={ext(lang, ZENA_URL, '/sobre-zena')}>{L('Conoce a Zena ↗', 'Meet Zena ↗')}</a><a class="btn btn--ghost" href={ext(lang, ZENA_URL, '/las-aventuras-en-turin')}>Las Aventuras en Turín ↗</a></div>
+    </div>
+  </section>
+
+  <!-- 2. Equipo (orden indicado por Zena) -->
+  <section class="section--tight wrap team">
+    <p class="eyebrow" data-reveal>{L('Junta y colaboradoras', 'Board & collaborators')}</p>
+    <h2 class="h2" data-reveal>{L('Quienes hacen posible la fundación', 'The people behind the foundation')}</h2>
+    <div class="team__list">
+      {equipo.map((p, i) => (
+        <article class="member" id={p.id} data-reveal style={`--d:${i * 80}ms`}>
+          <div class="member__foto frame"><Img name={p.foto} widths={p.widths} sizes="(max-width:860px) 80vw, 26vw" alt={p.nombre} /></div>
+          <h3 class="h3">{p.nombre}</h3>
+          <p class="eyebrow member__rol">{p.rol[lang]}</p>
+          <p class="small">{p.bio[0][lang]}</p>
+          <details class="member__more">
+            <summary>{L('Leer más', 'Read more')}</summary>
+            <div class="prose small">{p.bio.slice(1).map((b) => <p>{b[lang]}</p>)}</div>
+          </details>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- 3. La fundación en pocas palabras (textos originales) -->
+  <section class="section band--forest">
+    <div class="wrap essence">
+      <p class="eyebrow" data-reveal>{certificada[lang]}</p>
+      <div class="essence__lines">{puente.map((p, i) => <p class="bridge__line" data-reveal style={`--d:${i * 90}ms`}>{p[lang]}</p>)}</div>
+      <p class="lead" data-reveal>{porQue[0][lang]} {futuro[lang]}</p>
+      <div class="cta-row" data-reveal>
+        <a class="btn btn--accent" href={href(lang, '/programas')}>{L('Qué hacemos', 'What we do')} <span class="arrow">→</span></a>
+        <a class="btn btn--ghost btn--light" href={href(lang, '/donar')}>{L('Donar', 'Donate')}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .founder { padding-block: var(--sp-6) var(--sp-7); align-items: center; }
+  .founder__img { grid-column: 1 / span 5; margin: 0; }
+  .founder__img .frame { aspect-ratio: auto; height: min(58vh, 520px); border-radius: 50% 50% var(--r-lg) var(--r-lg); }
+  .founder__img .frame :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .founder__text { grid-column: 7 / span 6; display: grid; gap: var(--sp-4); align-content: center; justify-items: start; }
+  .founder__text :global(.h1), .founder__text .lead { margin: 0; }
+  .crumbs { color: var(--ink-soft); }
+  .team { display: grid; gap: var(--sp-3); padding-bottom: var(--sp-8); }
+  .team__list { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); margin-top: var(--sp-5); align-items: start; }
+  .member { display: grid; gap: var(--sp-2); }
+  .member__foto { aspect-ratio: 4 / 5; border-radius: var(--r-lg); overflow: hidden; margin-bottom: var(--sp-3); }
+  .member__foto :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .member .h3, .member p { margin: 0; }
+  .member__rol { margin-bottom: var(--sp-2); }
+  .member__more summary { cursor: pointer; font-weight: 600; font-size: var(--fs-sm); color: var(--accent); margin-top: var(--sp-2); }
+  .member__more .prose p { margin: var(--sp-3) 0 0; }
+  .essence { display: grid; gap: var(--sp-5); justify-items: start; max-width: 900px; }
+  .essence__lines { display: grid; gap: var(--sp-1); }
+  .bridge__line { font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.08; margin: 0; letter-spacing: -0.02em; }
+  .essence .lead { color: #CFE0C3; margin: 0; }
+  .btn--light { color: var(--paper); border-color: rgb(255 255 255 / .4); }
+  @media (max-width: 960px) { .team__list { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .team__list { grid-template-columns: 1fr; } }
+  @media (max-width: 860px) { .founder__img, .founder__text { grid-column: 1 / -1; } }
+</style>

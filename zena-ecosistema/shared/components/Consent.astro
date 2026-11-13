@@ -1,0 +1,15 @@
+---
+// Aviso de cookies: solo aparece si el sitio tiene un ID de Google Analytics configurado.
+interface Props { gaId?: string; privacyHref: string; lang?: 'es' | 'en' }
+const { gaId, privacyHref, lang = 'es' } = Astro.props;
+const en = lang === 'en';
+---
+{gaId && (
+  <div class="consent" data-consent role="dialog" aria-label={en ? 'Cookie preferences' : 'Preferencias de cookies'}>
+    <p style="margin:0">{en ? 'We use analytics cookies to understand how the site is used and improve it. We never enable them without your permission.' : 'Usamos cookies de analítica para entender cómo se usa el sitio y mejorarlo. No las activamos sin tu permiso.'} <a class="link" href={privacyHref}>{en ? 'Privacy policy' : 'Política de privacidad'}</a>.</p>
+    <div class="row">
+      <button class="btn" data-consent-choice="si">{en ? 'Accept analytics' : 'Aceptar analítica'}</button>
+      <button class="btn btn--ghost" data-consent-choice="no">{en ? 'Essential only' : 'Solo esenciales'}</button>
+    </div>
+  </div>
+)}

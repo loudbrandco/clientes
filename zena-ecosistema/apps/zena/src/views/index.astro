@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../../../../shared/components/Img.astro';
+import Split from '../../../../shared/components/Split.astro';
+import LogoFundacion from '../../../../shared/components/LogoFundacion.astro';
+import { FUNDACION_URL } from '../../../../shared/sites.mjs';
+import { type Lang, t, href, ext } from '../../../../shared/i18n';
+const { lang } = Astro.props as { lang: Lang };
+const turin = href(lang, '/las-aventuras-en-turin');
+---
+<Base lang={lang} title="Inicio" description={t(lang,
+  'Zena Ayoub, autora y creadora de Las Aventuras en Turín: proyecto transmedia educativo y de literatura infantil con libros, audiolibros y cuentos relajantes.',
+  'Zena Ayoub, author and creator of Las Aventuras en Turín: an educational, transmedia children’s literature project with books, audiobooks and calming stories.')}>
+
+  <!-- Inicio = quién es Zena (indicación del cliente, 4-nov-2026) -->
+  <section class="hero wrap">
+    <div class="hero__text">
+      <p class="eyebrow" data-reveal="fade">{t(lang, 'Quién soy', 'Who I am')}</p>
+      <Split as="h1" class="display hero__title" lines={['Zena <em class="wonk">Ayoub</em>']} delay={120} />
+      <p class="lead hero__lead" data-reveal style="--d:450ms">{t(lang,
+        'Politóloga de la Universidad del Rosario, con más de 15 años de experiencia en comunicación, relaciones públicas y proyectos con impacto social y cultural.',
+        'Political scientist from Universidad del Rosario, with more than 15 years of experience in communications, public relations and projects with social and cultural impact.')}</p>
+      <p class="hero__lead" data-reveal style="--d:550ms">{t(lang,
+        'Autora y productora de Las Aventuras en Turín y fundadora de The Adventurers Children Foundation.',
+        'Author and producer of Las Aventuras en Turín and founder of The Adventurers Children Foundation.')}</p>
+      <a class="link" href={href(lang, '/sobre-zena')} data-reveal style="--d:650ms">{t(lang, 'Conoce mi historia →', 'Read my story →')}</a>
+    </div>
+    <figure class="hero__media">
+      <div class="frame hero__photo">
+        <Img name="zena-arbol" widths={[600, 1000, 1500]} sizes="(max-width: 860px) 92vw, 40vw" alt={t(lang, 'Zena Ayoub sostiene el libro Las Aventuras en Turín junto a un árbol', 'Zena Ayoub holding the book Las Aventuras en Turín by a tree')} eager />
+      </div>
+    </figure>
+  </section>
+
+  <section class="wrap doors">
+    <a class="door door--turin" href={turin} data-reveal>
+      <div class="door__media"><Img name="ilus-portada" widths={[600, 1200]} sizes="(max-width:860px) 92vw, 45vw" alt="" /></div>
+      <div class="door__body">
+        <p class="eyebrow">{t(lang, 'Universo narrativo', 'Story universe')}</p>
+        <h2 class="h2">Las Aventuras en Turín</h2>
+        <p>{t(lang, 'Libros, audiolibros y cuentos en video para leer y escuchar en familia.', 'Books, audiobooks and video stories to read and listen to as a family.')}</p>
+        <span class="door__go">{t(lang, 'Conocer el universo narrativo →', 'Explore the story universe →')}</span>
+      </div>
+    </a>
+    <a class="door door--fund" href={ext(lang, FUNDACION_URL)} data-reveal style="--d:120ms" data-track="ir_fundacion">
+      <div class="door__media door__media--logo"><LogoFundacion /></div>
+      <div class="door__body">
+        <p class="eyebrow">{t(lang, 'La fundación', 'The foundation')}</p>
+        <h2 class="h2">The Adventurers Children Foundation</h2>
+        <p>{t(lang, 'Lo que comenzó como historias para formar valores, hoy se convierte en acción real.', 'What began as stories to build values is now becoming real action.')}</p>
+        <span class="door__go">{t(lang, 'Conocer la fundación →', 'Visit the foundation →')}</span>
+      </div>
+    </a>
+  </section>
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; padding-block: clamp(1.5rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem); }
+  .hero__text { display: grid; gap: var(--sp-4); justify-items: start; }
+  :global(.hero__title) { font-size: clamp(2.8rem, 1.6rem + 4vw, 5.5rem); }
+  :global(.hero__title em) { color: var(--olive); }
+  .hero__lead { max-width: 46ch; margin: 0; }
+  .hero__media { margin: 0; }
+  .hero__photo { aspect-ratio: 3 / 3.7; max-height: 76vh; margin-inline: auto; border-radius: 220px 220px var(--r-lg) var(--r-lg); }
+  .hero__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .doors { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); padding-bottom: var(--sp-8); }
+  .door { display: grid; grid-template-rows: auto 1fr; border-radius: var(--r-lg); overflow: hidden; text-decoration: none; color: inherit; background: var(--paper-raised); border: 1px solid var(--line); transition: transform var(--dur-3) var(--ease-out), box-shadow var(--dur-3); }
+  .door:hover { transform: translateY(-6px); box-shadow: var(--shadow-2); }
+  .door__media { aspect-ratio: 16 / 9; overflow: hidden; }
+  .door__media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .door__media--logo { background: #FBF7EE; display: grid; place-items: center; }
+  .door__media--logo :global(.logo-fund) { width: 100%; height: 100%; border-radius: 0; }
+  .door__body { display: grid; gap: var(--sp-3); align-content: start; padding: var(--sp-6); }
+  .door__body .h2, .door__body p { margin: 0; }
+  .door__go { font-weight: 600; font-size: var(--fs-sm); color: var(--accent); margin-top: var(--sp-2); }
+  @media (max-width: 860px) { .hero, .doors { grid-template-columns: 1fr; } .hero__photo { max-width: 420px; } }
+</style>

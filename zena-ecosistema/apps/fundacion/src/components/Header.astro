@@ -1,0 +1,66 @@
+---
+import { grupos, UBICACION } from '../data/nav';
+import { ZENA_URL } from '../../../../shared/sites.mjs';
+import { type Lang, href, ext, altPath, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const cur = (p: string) => (path === href(lang, p).replace(/\/$/, '') ? 'page' : undefined);
+const otro = lang === 'en' ? 'es' : 'en';
+const langHref = Astro.url.pathname.includes('404') ? href(otro, '/') : altPath(Astro.url.pathname, otro);
+---
+<div class="topline">
+  <div class="wrap">
+    <span>{UBICACION[lang]}</span>
+    <span class="hide-sm">{t(lang, 'Una iniciativa de', 'An initiative by')} <a class="link" href={ext(lang, ZENA_URL)}>Zena Ayoub</a> · <a class="link" href={ext(lang, ZENA_URL, '/las-aventuras-en-turin')}>Las Aventuras en Turín</a></span>
+  </div>
+</div>
+<header class="site-header" data-header>
+  <div class="wrap bar">
+    <a href={href(lang, '/')} class="brand" aria-label={t(lang, 'The Adventurers Children Foundation, inicio', 'The Adventurers Children Foundation, home')}>
+      <img src="/img/logo-fundacion-recorte-440.webp" srcset="/img/logo-fundacion-recorte-440.webp 440w, /img/logo-fundacion-recorte-900.webp 900w" sizes="290px" alt="The Adventurers Children Foundation" width="440" height="199" fetchpriority="high" />
+    </a>
+    <nav class="nav" aria-label={t(lang, 'Principal', 'Main')}>
+      {grupos.map((g) => g.path ? (
+        <a href={href(lang, g.path)} aria-current={cur(g.path)}>{g.titulo[lang]}</a>
+      ) : (
+        <div class="dd" data-dd>
+          <button type="button" aria-haspopup="true" aria-expanded="false" data-dd-btn>{g.titulo[lang]}</button>
+          <div class="dd__menu">{g.links.map((l) => <a href={href(lang, l.path)} aria-current={cur(l.path)}>{l[lang]}</a>)}</div>
+        </div>
+      ))}
+      <a href={href(lang, '/donar')} class="btn btn--accent" data-track="cta_donar_header">{t(lang, 'Donar', 'Donate')}</a>
+      <a class="lang" href={langHref} hreflang={otro} lang={otro} aria-label={otro === 'en' ? 'English version' : 'Versión en español'}>{otro.toUpperCase()}</a>
+    </nav>
+    <div class="bar__mobile">
+      <a class="lang" href={langHref} hreflang={otro} lang={otro}>{otro.toUpperCase()}</a>
+      <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="menu-movil">{t(lang, 'Menú', 'Menu')}</button>
+    </div>
+  </div>
+</header>
+<div class="drawer" id="menu-movil" data-nav-drawer>
+  <nav class="wrap" aria-label={t(lang, 'Menú móvil', 'Mobile menu')}>
+    <div class="cols">
+      {grupos.map((g) => (
+        <div><h3>{g.titulo[lang]}</h3><ul>{g.path ? <li><a href={href(lang, g.path)}>{g.titulo[lang]}</a></li> : g.links.map((l) => <li><a href={href(lang, l.path)}>{l[lang]}</a></li>)}</ul></div>
+      ))}
+      <div><h3>Zena Ayoub</h3><ul><li><a href={ext(lang, ZENA_URL)}>zenaayoub.com ↗</a></li><li><a href={ext(lang, ZENA_URL, '/las-aventuras-en-turin')}>Las Aventuras en Turín ↗</a></li></ul></div>
+    </div>
+    <a href={href(lang, '/donar')} class="btn btn--accent">{t(lang, 'Donar ahora', 'Donate now')}</a>
+  </nav>
+</div>
+<script>
+  // Submenús: se abren al pasar el mouse (CSS) o con clic / toque; se cierran al hacer clic afuera o con Esc
+  document.querySelectorAll<HTMLElement>('[data-dd]').forEach((dd) => {
+    const btn = dd.querySelector<HTMLButtonElement>('[data-dd-btn]')!;
+    const set = (open: boolean) => { dd.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); };
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const abrir = !dd.classList.contains('is-open');
+      document.querySelectorAll<HTMLElement>('[data-dd].is-open').forEach((o) => { o.classList.remove('is-open'); o.querySelector('[data-dd-btn]')?.setAttribute('aria-expanded', 'false'); });
+      set(abrir);
+    });
+    document.addEventListener('click', (e) => { if (!dd.contains(e.target as Node)) set(false); });
+    dd.addEventListener('keydown', (e) => { if (e.key === 'Escape') { set(false); btn.focus(); } });
+  });
+</script>

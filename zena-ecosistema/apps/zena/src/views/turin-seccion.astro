@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Img from '../../../../shared/components/Img.astro';
+import Split from '../../../../shared/components/Split.astro';
+import { libros, plataformasAudio, audiolibros, episodios, SPOTIFY_EMBED, YOUTUBE_EMBED } from '../data/contenido';
+import { turinSecciones } from '../data/nav';
+import { LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href, t } from '../../../../shared/i18n';
+import '../styles/turin.css';
+interface Props { lang: Lang; seccion: 'libros' | 'audiolibros' | 'video' }
+const { lang, seccion } = Astro.props;
+const actual = turinSecciones.find((x) => x.id === seccion)!;
+const info = {
+  libros: { lines: lang === 'en' ? ['The', '<em class="wonk">books</em>'] : ['Los', '<em class="wonk">libros</em>'], lead: t(lang, 'Una colección de historias reales y mágicas inspiradas en la naturaleza, los lazos familiares y la curiosidad infantil.', 'A collection of real and magical stories inspired by nature, family bonds and children’s curiosity.'), desc: t(lang, 'Libros de Las Aventuras en Turín, de Zena Ayoub: tapa blanda, tapa dura y Kindle, en español e inglés.', 'Las Aventuras en Turín books by Zena Ayoub: paperback, hardcover and Kindle, in Spanish and English.') },
+  audiolibros: { lines: lang === 'en' ? ['The', '<em class="wonk">audiobooks</em>'] : ['Los', '<em class="wonk">audiolibros</em>'], lead: t(lang, 'Escucha Las Aventuras en Turín en familia.', 'Listen to Las Aventuras en Turín as a family.'), desc: t(lang, 'Audiolibros y cuentos de Las Aventuras en Turín en Spotify, Apple Books y TuneIn.', 'Las Aventuras en Turín audiobooks and stories on Spotify, Apple Books and TuneIn.') },
+  video: { lines: lang === 'en' ? ['Stories', '<em class="wonk">on video</em>'] : ['Cuentos', '<em class="wonk">en video</em>'], lead: t(lang, 'Contenido audiovisual de Las Aventuras en Turín en YouTube.', 'Las Aventuras en Turín audiovisual content on YouTube.'), desc: t(lang, 'Videos de Las Aventuras en Turín en YouTube.', 'Las Aventuras en Turín videos on YouTube.') },
+}[seccion];
+---
+<Base lang={lang} title={`${actual[lang]} · Las Aventuras en Turín`} image="/img/ilus-portada-1200.webp" description={info.desc}>
+  <PageHead num="02" eyebrow="Las Aventuras en Turín" lines={info.lines} lead={info.lead} />
+
+  <section class="wrap" style="padding-bottom: var(--sp-9)">
+    <nav class="subnav" aria-label="Las Aventuras en Turín">
+      <a href={href(lang, '/las-aventuras-en-turin')}>← {t(lang, 'Universo narrativo', 'Story universe')}</a>
+      {turinSecciones.map((sc) => <a href={href(lang, sc.path)} aria-current={sc.id === seccion ? 'page' : undefined}>{sc[lang]}</a>)}
+    </nav>
+
+    {seccion === 'libros' && (
+      <div>
+        <div class="books">
+          {libros.map((l) => (
+            <article class="book">
+              <div class="cover cover--real"><Img name={l.portada} widths={[300, 600]} sizes="(max-width:600px) 80vw, (max-width:960px) 40vw, 22vw" alt={t(lang, `Portada del libro ${l.titulo}`, `Cover of the book ${l.titulo}`)} /></div>
+              <p class="eyebrow">{l.orden[lang]} · {l.idioma[lang]}</p>
+              <h2 class="h3">{l.titulo}</h2>
+              <p class="muted small">{l.resumen[lang]}</p>
+              <ul class="buy" role="list">
+                {l.formatos.map((f) => (
+                  <li><a href={f.url} target="_blank" rel="noopener" data-track="comprar_libro" data-track-label={`${l.titulo} – ${f.tipo.es}`}><span><strong>{f.tipo[lang]}</strong> · {f.plataforma === 'Tienda oficial' ? t(lang, 'Tienda oficial', 'Official store') : f.plataforma}</span><span aria-hidden="true">↗</span></a></li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+        <div class="shop">
+          <p><strong>{t(lang, 'Tienda oficial de Las Aventuras en Turín', 'Las Aventuras en Turín official store')}</strong></p>
+          <a class="btn btn--accent" href={LINKS.tienda} target="_blank" rel="noopener" data-track="tienda_oficial">{t(lang, 'Ir a la tienda', 'Go to the store')} <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    )}
+
+    {seccion === 'audiolibros' && (
+      <div class="audio">
+        <div class="abooks">
+          {audiolibros.map((a) => (
+            <article class="abook">
+              <div class="cover cover--real"><Img name={a.portada} widths={[300, 600]} sizes="(max-width:600px) 80vw, 22vw" alt={t(lang, `Portada de ${a.titulo}`, `Cover of ${a.titulo}`)} /></div>
+              <h2 class="h3">{a.titulo}</h2>
+              <div class="abook__links">
+                {a.links.map((l) => <a class="btn btn--ghost btn--sm" href={l.url} target="_blank" rel="noopener" data-track="escuchar_audiolibro" data-track-label={`${a.titulo} – ${l.nombre}`}>{t(lang, 'Escuchar en', 'Listen on')} {l.nombre} <span aria-hidden="true">↗</span></a>)}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div class="spotify grid-12">
+          <div style="grid-column: 1 / span 5">
+            <p class="eyebrow">{t(lang, 'Cuentos en Spotify', 'Stories on Spotify')}</p>
+            <ol class="eps" role="list">
+              {episodios.map((e, i) => <li><span class="eps__n">{String(i + 1).padStart(2, '0')}</span><span class="eps__t">{e.titulo}</span><span class="eps__m">{e.min} min</span></li>)}
+            </ol>
+            <div class="abook__links" style="margin-top: var(--sp-5)">
+              {plataformasAudio.map((p) => <a class="btn btn--ghost btn--sm" href={p.url} target="_blank" rel="noopener" data-track={p.track}>{p.nombre} <span aria-hidden="true">↗</span></a>)}
+            </div>
+          </div>
+          <div style="grid-column: 7 / span 6">
+            <iframe class="embed embed--spotify" src={SPOTIFY_EMBED} title={t(lang, 'Las Aventuras en Turín en Spotify', 'Las Aventuras en Turín on Spotify')} loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {seccion === 'video' && (
+      <div class="videobox">
+        <div class="embed embed--video">
+          <iframe src={YOUTUBE_EMBED} title={t(lang, 'Videos de Las Aventuras en Turín en YouTube', 'Las Aventuras en Turín videos on YouTube')} loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="videobox__text">
+          <h2 class="h2">{t(lang, 'Cuentos en video', 'Stories on video')}</h2>
+          <p class="lead">{t(lang,
+            'Animaciones suaves y narración en calma: contenido audiovisual pensado para no sobreestimular.',
+            'Gentle animation and calm narration: audiovisual content designed not to overstimulate.')}</p>
+          <a class="btn btn--accent" href={LINKS.youtube} target="_blank" rel="noopener" data-track="ver_youtube">{t(lang, 'Ver el canal en YouTube', 'Watch the channel on YouTube')} <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    )}
+  </section>
+</Base>

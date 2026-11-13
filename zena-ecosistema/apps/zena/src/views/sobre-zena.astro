@@ -1,0 +1,105 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Img from '../../../../shared/components/Img.astro';
+import { FUNDACION_URL } from '../../../../shared/sites.mjs';
+import { type Lang, t, href, ext } from '../../../../shared/i18n';
+const { lang } = Astro.props as { lang: Lang };
+
+// Hitos verificados (Amazon, Apple Books, Spotify, prensa e Instagram oficial)
+const hitos = [
+  { fecha: { es: 'Mayo 2025', en: 'May 2025' }, texto: { es: 'Publica el audiolibro Las Aventuras en Turín, narrado por ella misma, y la serie de cuentos en Spotify.', en: 'Releases the Las Aventuras en Turín audiobook, narrated by herself, and the story series on Spotify.' } },
+  { fecha: { es: 'Julio 2025', en: 'July 2025' }, texto: { es: 'Lanza Las Aventuras en Turín y su edición en inglés, Turin Adventures, en tapa blanda, tapa dura y Kindle.', en: 'Launches Las Aventuras en Turín and its English edition, Turin Adventures, in paperback, hardcover and Kindle.' } },
+  { fecha: { es: 'Marzo 2026', en: 'March 2026' }, texto: { es: 'Presenta el tercer libro, Las Mascotas de Michel y María, cuyas ganancias apoyan a la fundación.', en: 'Presents the third book, Las Mascotas de Michel y María, whose proceeds support the foundation.' } },
+  { fecha: { es: '2026', en: '2026' }, texto: { es: 'Entrevistas en Despierta América, El País, Semana, La FM y Teleantioquia.', en: 'Interviews on Despierta América, El País, Semana, La FM and Teleantioquia.' } },
+];
+---
+<Base lang={lang} title={t(lang, 'Sobre Zena', 'About Zena')} description={t(lang,
+  'Zena Ayoub: politóloga, autora y productora de Las Aventuras en Turín y fundadora de The Adventurers Children Foundation.',
+  'Zena Ayoub: political scientist, author and producer of Las Aventuras en Turín and founder of The Adventurers Children Foundation.')}>
+  <PageHead num="01" eyebrow="Zena Ayoub" lines={lang === 'en' ? ['The adventure', '<em class="wonk">begins today.</em>'] : ['La aventura', '<em class="wonk">empieza hoy.</em>']} />
+
+  <section class="wrap grid-12 intro">
+    <figure class="intro__img">
+      <div class="frame"><Img name="zena-familia" widths={[800, 1500]} sizes="(max-width:860px) 92vw, 50vw" alt={t(lang, 'Zena Ayoub con su familia en una banca del jardín', 'Zena Ayoub with her family on a garden bench')} eager /></div>
+    </figure>
+    <div class="intro__text prose">
+      <p class="lead" data-reveal>{t(lang,
+        'Soy profesional en Ciencia Política y Gobierno de la Universidad del Rosario (Bogotá, Colombia), con más de 15 años de experiencia en logística, marketing estratégico, relaciones públicas y gestión de proyectos con impacto social y cultural. Cuento con énfasis en Gerencia y un diplomado en Cooperación Internacional para el Desarrollo Sostenible: de la Teoría a la Práctica.',
+        'I hold a degree in Political Science and Government from Universidad del Rosario (Bogotá, Colombia) and have more than 15 years of experience in logistics, strategic marketing, public relations and the management of projects with social and cultural impact. I have an emphasis in Management and a diploma in International Cooperation for Sustainable Development: From Theory to Practice.')}</p>
+    </div>
+  </section>
+
+  <section class="section wrap grid-12 story">
+    <figure class="story__photo" data-reveal>
+      <div class="frame"><Img name="zena-arbol" widths={[600, 1000]} sizes="(max-width:860px) 80vw, 32vw" alt={t(lang, 'Zena Ayoub con un libro de Las Aventuras en Turín junto a un árbol', 'Zena Ayoub holding a Las Aventuras en Turín book by a tree')} /></div>
+    </figure>
+    <div class="story__text">
+      <div class="prose" data-reveal>
+        <p>{t(lang,
+        'A lo largo de mi trayectoria he liderado estrategias de posicionamiento de marca, desarrollo de alianzas institucionales y ejecución de proyectos que integran sostenibilidad, responsabilidad social y comunicación de alto impacto. Mi enfoque combina visión estratégica, creatividad y liderazgo, con una sólida capacidad para coordinar equipos multidisciplinarios, optimizar recursos y generar resultados medibles.',
+        'Throughout my career I have led brand positioning strategies, the development of institutional partnerships and projects that combine sustainability, social responsibility and high-impact communication. My approach brings together strategic vision, creativity and leadership, with a strong ability to coordinate multidisciplinary teams, optimize resources and deliver measurable results.')}</p>
+        <p>{t(lang,
+        'Soy autora y productora de Las Aventuras en Turín, un proyecto narrativo, educativo y transmedia que integra libro, audiolibro y contenido audiovisual, orientado a fortalecer el vínculo familiar, la conexión con la naturaleza y el uso consciente de la tecnología. Esta iniciativa representa la convergencia entre creatividad, propósito y estructura profesional, convirtiéndose en una plataforma de impacto cultural y educativo.',
+        'I am the author and producer of Las Aventuras en Turín, a narrative, educational and transmedia project that brings together books, audiobooks and audiovisual content to strengthen family bonds, connection with nature and a mindful use of technology. This initiative brings together creativity, purpose and professional structure, becoming a platform for cultural and educational impact.')}</p>
+      </div>
+      <figure class="story__wide" data-reveal>
+        <div class="frame"><Img name="zena-lectura" widths={[800, 1500]} sizes="(max-width:860px) 92vw, 55vw" alt={t(lang, 'Zena Ayoub leyendo en el jardín, rodeada de libros de Las Aventuras en Turín', 'Zena Ayoub reading in the garden, surrounded by Las Aventuras en Turín books')} /></div>
+      </figure>
+      <div class="prose" data-reveal>
+        <p>{t(lang,
+        'Asimismo, soy fundadora de The Adventurers Children Foundation, organización sin fines de lucro dedicada a promover experiencias educativas al aire libre, fortalecer los lazos familiares y fomentar el liderazgo consciente en la infancia. La fundación amplía el propósito social del proyecto narrativo, transformando la inspiración en acción concreta y acceso a experiencias significativas para más niños y comunidades.',
+        'I am also the founder of The Adventurers Children Foundation, a nonprofit organization dedicated to promoting outdoor educational experiences, strengthening family bonds and fostering mindful leadership in childhood. The foundation extends the social purpose of the storytelling project, turning inspiration into concrete action and access to meaningful experiences for more children and communities.')}</p>
+        <p>{t(lang,
+        'Mi trabajo se centra en construir ecosistemas de impacto donde la educación, la familia, la naturaleza y la innovación convivan estratégicamente para formar generaciones más conscientes, creativas y comprometidas.',
+        'My work focuses on building impact ecosystems where education, family, nature and innovation come together to raise more mindful, creative and committed generations.')}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="wrap grid-12">
+      <div style="grid-column: 1 / span 4">
+        <p class="eyebrow" data-reveal>{t(lang, 'Recorrido', 'Milestones')}</p>
+      </div>
+      <ol class="timeline" role="list" style="grid-column: 6 / span 7">
+        {hitos.map((h, i) => (
+          <li data-reveal style={`--d:${i * 80}ms`}><span class="timeline__date">{h.fecha[lang]}</span><p>{h.texto[lang]}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section wrap grid-12 next">
+    <figure style="grid-column: 1 / span 5; margin:0" data-reveal>
+      <div class="frame" style="aspect-ratio:4/3"><Img name="libros-pila" widths={[800, 1500]} sizes="(max-width:860px) 92vw, 40vw" alt={t(lang, 'Pila de ejemplares de Las Aventuras en Turín', 'A stack of copies of Las Aventuras en Turín')} /></div>
+    </figure>
+    <div style="grid-column: 7 / span 6; display:grid; gap: var(--sp-5); align-content:center; justify-items:start">
+      <h2 class="h2" data-reveal>{t(lang, '¡Escucha Las Aventuras en Turín!', 'Listen to Las Aventuras en Turín!')}</h2>
+      <div style="display:flex; gap: var(--sp-3); flex-wrap: wrap" data-reveal>
+        <a class="btn" href={href(lang, '/las-aventuras-en-turin')}>Las Aventuras en Turín <span class="arrow">→</span></a>
+        <a class="btn btn--ghost" href={ext(lang, FUNDACION_URL)}>The Adventurers Children Foundation ↗</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro__img { grid-column: 1 / span 7; margin: 0; }
+  .intro__img .frame { aspect-ratio: 3 / 2; }
+  .intro__text { grid-column: 9 / span 4; align-self: end; }
+  .timeline { border-left: 1px solid var(--line-strong); }
+  .timeline li { position: relative; padding: 0 0 var(--sp-6) var(--sp-6); }
+  .timeline li::before { content: ''; position: absolute; left: -5px; top: .45em; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+  .timeline__date { font-family: var(--font-display); font-style: italic; font-size: var(--fs-lg); color: var(--accent); }
+  .timeline p { margin: var(--sp-2) 0 0; }
+  .story { align-items: start; }
+  .story__photo { grid-column: 1 / span 5; margin: 0; position: sticky; top: 110px; }
+  .story__photo .frame { aspect-ratio: 2 / 3; border-radius: 200px 200px var(--r-lg) var(--r-lg); }
+  .story__photo :global(img), .story__wide :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .story__text { grid-column: 7 / span 6; display: grid; gap: var(--sp-6); }
+  .story__text .prose p { margin: 0 0 var(--sp-4); }
+  .story__wide { margin: 0; }
+  .story__wide .frame { aspect-ratio: 3 / 2; border-radius: var(--r-lg); transform: rotate(-1.2deg); box-shadow: var(--shadow-2); }
+  @media (max-width: 860px) { .story__photo { position: static; max-width: 420px; } }
+</style>

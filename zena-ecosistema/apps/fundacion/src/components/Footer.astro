@@ -1,0 +1,38 @@
+---
+import Contours from '../../../../shared/components/Contours.astro';
+import Img from '../../../../shared/components/Img.astro';
+import { grupos, UBICACION } from '../data/nav';
+import { ZENA_URL, LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href, ext, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <Contours class="contours" seed={21} />
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-logo"><img src="/img/logo-fundacion-900.webp" alt="The Adventurers Children Foundation" width="900" height="402" loading="lazy" /></div>
+      <p class="big">{t(lang, 'Cada aventura se convierte en', 'Every adventure becomes')} <em>{t(lang, 'acción', 'action')}</em>.</p>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>The Adventurers Children Foundation</h4>
+        <p class="small">{UBICACION[lang]}</p>
+        <p class="small">{t(lang, 'Programas en Tena, Cundinamarca, Colombia.', 'Programs in Tena, Cundinamarca, Colombia.')}</p>
+        <p class="small"><a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a></p>
+      </div>
+      {grupos.filter((g) => !g.path).map((g) => (
+        <div><h4>{g.titulo[lang]}</h4><ul>{g.links.map((l) => <li><a class="link" href={href(lang, l.path)}>{l[lang]}</a></li>)}</ul></div>
+      ))}
+    </div>
+    <div class="legal">
+      <span>© {year} The Adventurers Children Foundation · <a class="link" href={ext(lang, ZENA_URL)}>Zena Ayoub</a> · <a class="link" href={LINKS.instagram} target="_blank" rel="noopener">Instagram</a></span>
+      <span style="display:flex; gap: 1.2rem; flex-wrap: wrap">
+        <a class="link" href={href(lang, '/privacidad')}>{t(lang, 'Privacidad y tratamiento de datos', 'Privacy & data policy')}</a>
+        <a class="link" href={href(lang, '/terminos')}>{t(lang, 'Términos', 'Terms')}</a>
+        <a class="link" href={href(lang, '/contacto')}>{t(lang, 'Contacto', 'Contact')}</a>
+      </span>
+    </div>
+  </div>
+</footer>

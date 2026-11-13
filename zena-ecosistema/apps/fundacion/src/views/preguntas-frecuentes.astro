@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { LINKS } from '../../../../shared/sites.mjs';
+import { aliadosTexto, dondeTrabajamos } from '../data/fundacion';
+import { MONEDA, COMISION } from '../data/stripe';
+import { type Lang, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const L = (es: string, en2: string) => t(lang, es, en2);
+const faqs: [string, string][] = en ? [
+  ['What is The Adventurers Children Foundation?', 'A certified and registered 501(c)(3) nonprofit founded by Zena Ayoub, dedicated to promoting outdoor educational experiences, strengthening family bonds and fostering mindful leadership in childhood.'],
+  ['Where are you based and where do you work?', `We are based in Miami, Florida, United States. ${dondeTrabajamos.en}`],
+  ['Who do you work with?', aliadosTexto.en],
+  ['How can I donate?', `On the Donate page, by card, Apple Pay or Google Pay. Payments are processed by Stripe in ${MONEDA}; you can give once or monthly.`],
+  ['What is the processing fee option?', `When donating you can choose to add ${Math.round(COMISION * 100)}% to cover processing fees, so the foundation receives the full amount.`],
+  ['Can I cancel a monthly gift?', `Yes, anytime. Write to ${LINKS.emailFundacion}.`],
+  ['How is Las Aventuras en Turín related?', 'The foundation extends the social purpose of the Las Aventuras en Turín storytelling project. Proceeds from the book Las Mascotas de Michel y María support the foundation’s work.'],
+  ['How can my company get involved?', 'Through corporate volunteering and strategic public-private partnerships. See the Corporate partnerships page.'],
+] : [
+  ['¿Qué es The Adventurers Children Foundation?', 'Una fundación sin fines de lucro, certificada y registrada 501(c)(3), fundada por Zena Ayoub y dedicada a promover experiencias educativas al aire libre, fortalecer los lazos familiares y fomentar el liderazgo consciente en la infancia.'],
+  ['¿Dónde están y dónde trabajan?', `Nuestra sede está en Miami, Florida, Estados Unidos. ${dondeTrabajamos.es}`],
+  ['¿Con quién trabajan?', aliadosTexto.es],
+  ['¿Cómo puedo donar?', `En la página Donar, con tarjeta, Apple Pay o Google Pay. Los pagos los procesa Stripe en ${MONEDA}; puedes donar una vez o cada mes.`],
+  ['¿Qué es la opción de cubrir la comisión?', `Al donar puedes sumar el ${Math.round(COMISION * 100)} % para cubrir los cargos de procesamiento, y así la fundación recibe el monto completo.`],
+  ['¿Puedo cancelar mi donación mensual?', `Sí, cuando quieras. Escríbenos a ${LINKS.emailFundacion}.`],
+  ['¿Qué relación tiene con Las Aventuras en Turín?', 'La fundación amplía el propósito social del proyecto narrativo Las Aventuras en Turín. Las ganancias del libro Las Mascotas de Michel y María apoyan el trabajo de la fundación.'],
+  ['¿Cómo puede participar mi empresa?', 'A través del voluntariado corporativo y de alianzas estratégicas público-privadas. Conoce la página de Alianzas empresariales.'],
+];
+const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
+---
+<Base lang={lang} title={L('Preguntas frecuentes', 'FAQ')} description={L('Preguntas frecuentes sobre The Adventurers Children Foundation: dónde estamos, cómo donar y cómo participar.', 'Frequently asked questions about The Adventurers Children Foundation: where we are, how to donate and how to get involved.')} jsonld={ld}>
+  <PageHead lang={lang} seccion={L('Transparencia · Preguntas frecuentes', 'Transparency · FAQ')} lines={en ? ['Frequently', '<em class="it-accent">asked questions.</em>'] : ['Preguntas', '<em class="it-accent">frecuentes.</em>']} />
+  <section class="wrap faq measure" style="padding-bottom: var(--sp-8)">
+    {faqs.map(([q, a]) => <details data-reveal><summary>{q}</summary><p>{a}</p></details>)}
+  </section>
+</Base>

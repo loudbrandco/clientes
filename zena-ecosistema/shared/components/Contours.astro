@@ -1,0 +1,39 @@
+---
+// Curvas de nivel generadas (motivo gráfico original de "territorio").
+// Dibuja anillos irregulares concéntricos, como un mapa topográfico de montaña.
+interface Props { class?: string; seed?: number; rings?: number; stroke?: string; animate?: boolean }
+const { class: cls, seed = 7, rings = 14, stroke = 'currentColor', animate = false } = Astro.props;
+
+let s = seed;
+const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+const harmonics = Array.from({ length: 5 }, (_, k) => ({ a: (rnd() * 0.18) / (k + 1), f: k + 2, p: rnd() * Math.PI * 2 }));
+const paths: string[] = [];
+for (let r = 1; r <= rings; r++) {
+  const base = 18 + r * 22;
+  const pts: [number, number][] = [];
+  for (let i = 0; i < 72; i++) {
+    const t = (i / 72) * Math.PI * 2;
+    let m = 1;
+    for (const h of harmonics) m += h.a * Math.sin(h.f * t + h.p + r * 0.13);
+    pts.push([300 + Math.cos(t) * base * m * 1.25, 300 + Math.sin(t) * base * m]);
+  }
+  // Curva suave (Catmull-Rom → Bézier)
+  let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < pts.length; i++) {
+    const p0 = pts[(i - 1 + pts.length) % pts.length], p1 = pts[i], p2 = pts[(i + 1) % pts.length], p3 = pts[(i + 2) % pts.length];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  paths.push(d + 'Z');
+}
+---
+<svg class:list={[cls, animate && 'contours--draw']} viewBox="0 0 600 600" fill="none" aria-hidden="true" focusable="false">
+  {paths.map((d, i) => <path d={d} stroke={stroke} stroke-width={i % 4 === 3 ? 1.4 : 0.7} pathLength="1" style={`--i:${i}`} />)}
+</svg>
+
+<style>
+  .contours--draw path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.6s var(--ease-out) forwards; animation-delay: calc(var(--i) * 70ms); }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .contours--draw path { animation: none; stroke-dashoffset: 0; } }
+</style>

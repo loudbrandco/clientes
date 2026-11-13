@@ -1,0 +1,49 @@
+---
+import { FUNDACION_URL, LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href, ext, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="big">{t(lang, 'Porque las mejores aventuras', 'Because the best adventures')}<br /><em class="wonk">{t(lang, 'suceden en familia.', 'happen as a family.')}</em></p>
+    <div class="cols">
+      <div>
+        <h4>{t(lang, 'Escríbenos', 'Write to us')}</h4>
+        <p style="margin:0 0 .4rem"><span class="small" style="opacity:.7">Zena Ayoub · Las Aventuras en Turín</span><br /><a class="link" href={`mailto:${LINKS.emailZena}`}>{LINKS.emailZena}</a></p>
+        <p style="margin:0 0 .8rem"><span class="small" style="opacity:.7">The Adventurers Children Foundation</span><br /><a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a></p>
+        <p class="small" style="opacity:.75">{t(lang, 'Familias, colegios, marcas y personas que creen en la educación consciente.', 'Families, schools, brands and people who believe in mindful education.')}</p>
+      </div>
+      <div>
+        <h4>{t(lang, 'Universo narrativo', 'Story universe')}</h4>
+        <ul>
+          <li><a class="link" href={href(lang, '/las-aventuras-en-turin/libros')}>{t(lang, 'Libros', 'Books')}</a></li>
+          <li><a class="link" href={href(lang, '/las-aventuras-en-turin/audiolibros')}>{t(lang, 'Audiolibros', 'Audiobooks')}</a></li>
+          <li><a class="link" href={href(lang, '/las-aventuras-en-turin/video')}>Video</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Zena</h4>
+        <ul>
+          <li><a class="link" href={href(lang, '/sobre-zena')}>{t(lang, 'Quién soy', 'About me')}</a></li>
+          <li><a class="link" href={href(lang, '/prensa')}>{t(lang, 'Prensa', 'Press')}</a></li>
+          <li><a class="link" href={href(lang, '/contacto')}>{t(lang, 'Contacto', 'Contact')}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>{t(lang, 'Fundación y redes', 'Foundation & social')}</h4>
+        <ul>
+          <li><a class="link" href={ext(lang, FUNDACION_URL)}>The Adventurers Children Foundation</a></li>
+          <li><a class="link ext" href={LINKS.instagram} rel="noopener" target="_blank">Instagram</a></li>
+          <li><a class="link ext" href={LINKS.youtube} rel="noopener" target="_blank">YouTube</a></li>
+          <li><a class="link ext" href={LINKS.spotify} rel="noopener" target="_blank">Spotify</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© {year} Zena Ayoub · Las Aventuras en Turín</span>
+      <span><a class="link" href={href(lang, '/privacidad')}>{t(lang, 'Privacidad', 'Privacy')}</a></span>
+    </div>
+  </div>
+</footer>

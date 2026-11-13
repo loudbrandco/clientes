@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { LINKS, ZENA_URL } from '../../../../shared/sites.mjs';
+import { type Lang, href, ext, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Términos y condiciones', 'Terms & conditions')} description={L('Términos de uso del sitio y condiciones de las donaciones a The Adventurers Children Foundation.', 'Site terms of use and donation conditions of The Adventurers Children Foundation.')}>
+  <PageHead lang={lang} seccion={L('Términos', 'Terms')} lines={lang === 'en' ? ['Terms', '& conditions'] : ['Términos', 'y condiciones']} />
+  <section class="wrap">
+{lang === 'en' ? (
+    <div class="prose measure">
+      <p><strong>Version:</strong> 1.0 · October 2026.</p>
+      <div class="note">Base document for review by the foundation’s legal advisor.</div>
+      <h2>1. Use of the site</h2>
+      <p>This site presents the work of The Adventurers Children Foundation. By using it you accept these terms. Content is informational and may change without notice.</p>
+      <h2>2. Intellectual property</h2>
+      <p>Texts, illustrations, logos and images belong to the foundation, Zena Ayoub or Las Aventuras en Turín, or are used with permission. They may not be reproduced without written consent.</p>
+      <h2>3. Donations</h2>
+      <ul>
+        <li>Donations are voluntary and support the foundation’s purposes described on this site.</li>
+        <li>Payments are processed by Stripe, in US dollars (USD), and are also subject to Stripe’s terms.</li>
+        <li>Monthly donations are charged automatically until you cancel; you can cancel anytime by writing to <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>.</li>
+        <li>Donations are non-refundable, except for a proven error in the amount or an unauthorized charge, which must be reported within 15 days.</li>
+        <li>The tax treatment of each donation depends on the donor’s country and situation.</li>
+      </ul>
+      <h2>4. External links</h2>
+      <p>The site links to third-party platforms (Stripe, social networks, <a class="link" href={ext(lang, ZENA_URL)}>zenaayoub.com</a>, book stores). The foundation is not responsible for their content or policies.</p>
+      <h2>5. Privacy</h2>
+      <p>Personal data is handled under our <a class="link" href={href(lang, '/privacidad')}>privacy and data policy</a>.</p>
+      <h2>6. Contact</h2>
+      <p>For any question about these terms: <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>.</p>
+    </div>
+) : (
+    <div class="prose measure">
+      <p><strong>Versión:</strong> 1.0 · octubre de 2026.</p>
+      <div class="note">Documento base para revisión del asesor legal de la fundación.</div>
+
+      <h2>1. Uso del sitio</h2>
+      <p>Este sitio presenta el trabajo de The Adventurers Children Foundation. Al usarlo aceptas estos términos. El contenido es informativo y puede actualizarse sin previo aviso.</p>
+
+      <h2>2. Propiedad intelectual</h2>
+      <p>Los textos, ilustraciones, logotipos e imágenes pertenecen a la fundación, a Zena Ayoub o a Las Aventuras en Turín, o se usan con autorización. No pueden reproducirse sin permiso escrito.</p>
+
+      <h2>3. Donaciones</h2>
+      <ul>
+        <li>Las donaciones son voluntarias y se destinan a los fines de la fundación descritos en este sitio.</li>
+        <li>Los pagos se procesan a través de Stripe, en dólares estadounidenses (USD), y están sujetos también a los términos de Stripe.</li>
+        <li>Las donaciones mensuales se cobran automáticamente hasta que las canceles; puedes hacerlo en cualquier momento escribiendo a <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>.</li>
+        <li>Las donaciones no son reembolsables, salvo error comprobado en el monto o cobro no autorizado, que debe informarse dentro de los 15 días siguientes.</li>
+        <li>El tratamiento tributario de cada donación depende del país y la situación del donante.</li>
+      </ul>
+
+      <h2>4. Enlaces externos</h2>
+      <p>El sitio enlaza a plataformas de terceros (Stripe, redes sociales, <a class="link" href={ext(lang, ZENA_URL)}>zenaayoub.com</a>, tiendas de libros). La fundación no responde por el contenido ni las políticas de esos sitios.</p>
+
+      <h2>5. Privacidad</h2>
+      <p>El tratamiento de datos personales se rige por nuestra <a class="link" href={href(lang, '/privacidad')}>política de privacidad y tratamiento de datos</a>.</p>
+
+      <h2>6. Contacto</h2>
+      <p>Para cualquier inquietud sobre estos términos: <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>.</p>
+    </div>
+)}
+  </section>
+</Base>

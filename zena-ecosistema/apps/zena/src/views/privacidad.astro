@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, t } from '../../../../shared/i18n';
+const { lang } = Astro.props as { lang: Lang };
+const en = lang === 'en';
+---
+<Base lang={lang} title={t(lang, 'Política de privacidad', 'Privacy policy')} description={t(lang, 'Política de tratamiento de datos personales de zenaayoub.com.', 'Personal data policy for zenaayoub.com.')}>
+  <PageHead num="—" eyebrow="Legal" lines={en ? ['Privacy', 'policy'] : ['Política de', 'privacidad']} />
+  <section class="wrap">
+    {en ? (
+      <div class="prose measure">
+        <p><strong>Last updated:</strong> October 2026.</p>
+        <h2>Data controller</h2><p>Zena Ayoub, for zenaayoub.com and Las Aventuras en Turín. Contact for personal data matters: <a class="link" href={`mailto:${LINKS.emailZena}`}>{LINKS.emailZena}</a>.</p>
+        <h2>What we collect</h2><ul><li>What you send us through the contact form: name, email, type of contact and message.</li><li>Aggregated browsing data, only if you accept analytics cookies.</li></ul>
+        <h2>How we use it</h2><p>To answer your messages and manage collaborations and press requests. We do not sell or share your data for commercial purposes.</p>
+        <h2>Your rights</h2><p>Under Colombian Law 1581 of 2012 you may access, update, correct or delete your data and withdraw your consent by writing to the email above.</p>
+        <h2>Purchases and donations</h2><p>Books are sold on external platforms and donations are made on The Adventurers Children Foundation site. Each applies its own privacy policy.</p>
+      </div>
+    ) : (
+      <div class="prose measure">
+        <p><strong>Última actualización:</strong> octubre de 2026.</p>
+        <h2>Responsable</h2><p>Zena Ayoub, en relación con zenaayoub.com y Las Aventuras en Turín. Contacto para asuntos de datos personales: <a class="link" href={`mailto:${LINKS.emailZena}`}>{LINKS.emailZena}</a>.</p>
+        <h2>Qué datos recogemos</h2><ul><li>Los que nos envías en el formulario de contacto: nombre, correo, tipo de contacto y mensaje.</li><li>Datos de navegación agregados, solo si aceptas las cookies de analítica.</li></ul>
+        <h2>Para qué los usamos</h2><p>Para responder tus mensajes y gestionar colaboraciones y solicitudes de prensa. No vendemos ni cedemos tus datos con fines comerciales.</p>
+        <h2>Tus derechos</h2><p>De acuerdo con la Ley 1581 de 2012, puedes conocer, actualizar, rectificar y solicitar la supresión de tus datos, y revocar la autorización, escribiendo al correo indicado.</p>
+        <h2>Compras y donaciones</h2><p>Los libros se venden en plataformas externas y las donaciones se hacen en el sitio de The Adventurers Children Foundation. Cada una aplica su propia política de privacidad.</p>
+      </div>
+    )}
+  </section>
+</Base>

@@ -1,0 +1,12 @@
+---
+import Split from '../../../../shared/components/Split.astro';
+import { type Lang, href, t } from '../../../../shared/i18n';
+interface Props { seccion: string; lines: string[]; lead?: string; lang: Lang }
+const { seccion, lines, lead, lang } = Astro.props;
+---
+<header class="page-head wrap">
+  <nav class="crumbs" aria-label={t(lang, 'Ruta', 'Breadcrumb')} data-reveal="fade"><a class="link" href={href(lang, '/')}>{t(lang, 'Inicio', 'Home')}</a><span aria-hidden="true">/</span><span>{seccion}</span></nav>
+  <Split as="h1" class="h1" lines={lines} />
+  {lead && <p class="lead" data-reveal style="--d:300ms">{lead}</p>}
+  <slot />
+</header>

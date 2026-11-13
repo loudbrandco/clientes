@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Política de privacidad y tratamiento de datos', 'Privacy & data policy')} description={L('Política de tratamiento de datos personales de The Adventurers Children Foundation.', 'Personal data policy of The Adventurers Children Foundation.')}>
+  <PageHead lang={lang} seccion={L('Privacidad', 'Privacy')} lines={lang === 'en' ? ['Privacy', 'and data policy'] : ['Política de privacidad', 'y tratamiento de datos']} />
+  <section class="wrap">
+{lang === 'en' ? (
+    <div class="prose measure">
+      <p><strong>Version:</strong> 1.0 · October 2026.</p>
+      <div class="note">This document must be reviewed by the foundation’s legal advisor before final publication. The entity’s identification details (legal name and EIN) will be completed in section 1.</div>
+      <h2>1. Data controller</h2>
+      <p>The Adventurers Children Foundation, a 501(c)(3) nonprofit based in Miami, Florida, United States. Contact for personal-data matters: <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>.</p>
+      <h2>2. Legal framework</h2>
+      <p>Because we run programs in Colombia, this policy follows Colombian Statutory Law 1581 of 2012, Decree 1377 of 2013 (compiled in Decree 1074 of 2015) and related rules, as well as the applicable laws of the other jurisdictions where the foundation operates.</p>
+      <h2>3. Data we process</h2>
+      <ul>
+        <li><strong>Contact, volunteering and partnerships:</strong> name, email, phone, city, company, role and anything you share in your message.</li>
+        <li><strong>Donations:</strong> name, email and the transaction data Stripe reports to us. Card details are handled exclusively by Stripe; the foundation never receives or stores them.</li>
+        <li><strong>Browsing:</strong> aggregated site-usage data, only if you accept analytics cookies.</li>
+        <li><strong>Images at activities:</strong> photos and videos of outings, only with prior authorization.</li>
+      </ul>
+      <h2>4. Purposes</h2>
+      <ul>
+        <li>Managing donations, issuing receipts and meeting accounting and tax obligations.</li>
+        <li>Coordinating volunteering, partnerships and the foundation’s activities.</li>
+        <li>Answering requests and sending information about our work when you have authorized it.</li>
+        <li>Reporting on the foundation’s impact.</li>
+      </ul>
+      <h2>5. Children’s data</h2>
+      <p>We respect the best interests of minors. We only process their data or images with the express authorization of their parents or legal guardians, for purposes related to the foundation’s activities. We never publish data that could identify or locate a minor.</p>
+      <h2>6. Your rights</h2>
+      <p>You may access, update, correct and request deletion of your data; request proof of authorization; be informed about its use; revoke your authorization and file complaints with the competent authority. To exercise these rights, write to <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>. Inquiries are answered within ten (10) business days and claims within fifteen (15) business days.</p>
+      <h2>7. Processors and transfers</h2>
+      <p>We use providers that may process data on our behalf, such as Stripe (payments), email, forms and hosting services. Some are located outside Colombia and the United States; we require them to meet adequate protection standards.</p>
+      <h2>8. Security and retention</h2>
+      <p>We apply reasonable measures to protect your data and keep it only as long as needed for the purposes above and our legal obligations.</p>
+      <h2>9. Cookies</h2>
+      <p>The site works without tracking cookies. Analytics cookies are only enabled if you accept them in the notice shown when you visit.</p>
+      <h2>10. Effective date</h2>
+      <p>This policy is effective upon publication. Any material change will be announced on this site.</p>
+    </div>
+) : (
+    <div class="prose measure">
+      <p><strong>Versión:</strong> 1.0 · octubre de 2026.</p>
+      <div class="note">Este documento debe ser revisado por el asesor legal de la fundación antes de su publicación definitiva. Los datos de identificación de la entidad (razón social y EIN) se completarán en la sección 1.</div>
+
+      <h2>1. Responsable del tratamiento</h2>
+      <p>The Adventurers Children Foundation, organización sin fines de lucro 501(c)(3) con sede en Miami, Florida, Estados Unidos. Correo de contacto para asuntos de datos personales: <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>.</p>
+
+      <h2>2. Marco normativo</h2>
+      <p>Por desarrollar programas en Colombia, esta política se rige por la Ley Estatutaria 1581 de 2012, el Decreto 1377 de 2013 (compilado en el Decreto 1074 de 2015) y demás normas colombianas sobre protección de datos personales, así como por la normativa aplicable en las demás jurisdicciones donde opere la fundación.</p>
+
+      <h2>3. Datos que tratamos</h2>
+      <ul>
+        <li><strong>Contacto, voluntariado y alianzas:</strong> nombre, correo, teléfono, ciudad, empresa, cargo y la información que nos compartas en tu mensaje.</li>
+        <li><strong>Donaciones:</strong> nombre, correo y datos de la transacción que Stripe nos reporta. Los datos de la tarjeta los trata exclusivamente Stripe; la fundación no los recibe ni los almacena.</li>
+        <li><strong>Navegación:</strong> datos agregados de uso del sitio, solo si aceptas las cookies de analítica.</li>
+        <li><strong>Imágenes en actividades:</strong> fotografías y videos de jornadas, únicamente con autorización previa.</li>
+      </ul>
+
+      <h2>4. Finalidades</h2>
+      <ul>
+        <li>Gestionar donaciones, emitir comprobantes y certificados, y cumplir obligaciones contables y tributarias.</li>
+        <li>Coordinar el voluntariado, las alianzas y las actividades de la fundación.</li>
+        <li>Responder solicitudes y enviar información sobre nuestro trabajo cuando lo hayas autorizado.</li>
+        <li>Rendir cuentas e informar sobre el impacto de la fundación.</li>
+      </ul>
+
+      <h2>5. Datos de niñas, niños y adolescentes</h2>
+      <p>Respetamos el interés superior de los menores de edad. Solo tratamos sus datos o imágenes con autorización expresa de sus padres o representantes legales y para finalidades relacionadas con las actividades de la fundación. No publicamos datos que permitan identificar o ubicar a un menor.</p>
+
+      <h2>6. Derechos del titular</h2>
+      <p>Puedes conocer, actualizar, rectificar y solicitar la supresión de tus datos; solicitar prueba de la autorización; ser informado sobre su uso; revocar la autorización y presentar quejas ante la Superintendencia de Industria y Comercio. Para ejercerlos, escribe a <a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a>. Las consultas se atienden en máximo diez (10) días hábiles y los reclamos en máximo quince (15) días hábiles.</p>
+
+      <h2>7. Encargados y transferencias</h2>
+      <p>Para operar usamos proveedores que pueden tratar datos por cuenta nuestra, como Stripe (pagos), servicios de correo electrónico, formularios y hosting. Algunos de ellos están fuera de Colombia; exigimos que cumplan estándares adecuados de protección.</p>
+
+      <h2>8. Seguridad y conservación</h2>
+      <p>Aplicamos medidas razonables para proteger tus datos y los conservamos solo durante el tiempo necesario para las finalidades descritas y las obligaciones legales.</p>
+
+      <h2>9. Cookies</h2>
+      <p>El sitio funciona sin cookies de seguimiento. Las de analítica solo se activan si las aceptas en el aviso que aparece al visitar el sitio.</p>
+
+      <h2>10. Vigencia</h2>
+      <p>Esta política rige desde su publicación. Cualquier cambio sustancial será informado en este sitio.</p>
+    </div>
+)}
+  </section>
+</Base>

@@ -1,0 +1,15 @@
+{
+  "name": "zena-ecosistema",
+  "private": true,
+  "description": "Ecosistema digital: zenaayoub.com + theadventurerscf.org",
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev:zena": "npm run dev -w apps/zena",
+    "dev:fundacion": "npm run dev -w apps/fundacion",
+    "build": "npm run build -w apps/zena && npm run build -w apps/fundacion",
+    "build:zena": "npm run build -w apps/zena",
+    "build:fundacion": "npm run build -w apps/fundacion",
+    "check:links": "node shared/scripts/check-links.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

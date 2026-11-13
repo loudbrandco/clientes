@@ -1,0 +1,201 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Contours from '../../../../shared/components/Contours.astro';
+import { MONTOS, MONEDA, MONTO_MINIMO, COMISION, STRIPE_PUBLISHABLE_KEY, STRIPE_ENDPOINT, STRIPE_PORTAL } from '../data/stripe';
+import { programas } from '../data/fundacion';
+import { LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+const en = lang === 'en';
+const config = JSON.stringify({ pk: STRIPE_PUBLISHABLE_KEY, endpoint: en ? '../' + STRIPE_ENDPOINT : STRIPE_ENDPOINT, minimo: MONTO_MINIMO, comision: COMISION, email: LINKS.emailFundacion, lang,
+  tx: en ? { elige: 'the amount you choose', mes: 'every month', unica: 'one time', min: 'Enter an amount of at least US$ ', prep: 'Preparing secure payment…', aporte: 'Your gift: ', err: 'We couldn’t start the payment. Write to us at ' }
+         : { elige: 'el monto que elijas', mes: 'cada mes', unica: 'una sola vez', min: 'Escribe un monto de al menos US$ ', prep: 'Preparando el pago seguro…', aporte: 'Tu aporte: ', err: 'No pudimos iniciar el pago. Escríbenos a ' } });
+---
+<Base lang={lang} title={L('Donar', 'Donate')} description={L('Dona a The Adventurers Children Foundation: tu aporte, único o mensual, impulsa proyectos ecológicos y educación ambiental en Tena, Cundinamarca. Pago seguro con Stripe.', 'Donate to The Adventurers Children Foundation: your one-time or monthly gift drives ecological projects and environmental education in Tena, Cundinamarca. Secure payment with Stripe.')}>
+  <PageHead lang={lang} seccion={L('Participa · Donar', 'Get involved · Donate')} lines={en ? ['Leave a', '<em class="it-accent">positive footprint.</em>'] : ['Deja una', '<em class="it-accent">huella positiva.</em>']}
+    lead={L('Tu apoyo impulsa proyectos ecológicos y educación ambiental para nuestros niños.', 'Your support drives ecological projects and environmental education for our children.')} />
+
+  <section class="wrap give">
+    <div class="give__box" data-reveal>
+      <Contours class="give__lines" seed={5} rings={9} />
+      <form class="give__step" id="donar-form" aria-describedby="give-sum" novalidate>
+        <fieldset class="seg">
+          <legend class="visually-hidden">{L('Frecuencia de la donación', 'Donation frequency')}</legend>
+          <label><input type="radio" name="freq" value="unica" checked /><span>{L('Donación única', 'One-time')}</span></label>
+          <label><input type="radio" name="freq" value="mensual" /><span>{L('Mensual', 'Monthly')}</span></label>
+        </fieldset>
+
+        <fieldset class="amounts">
+          <legend class="small muted">{L('Elige un monto', 'Choose an amount')} ({MONEDA})</legend>
+          <div class="amounts__grid">
+            {MONTOS.map((m, i) => (
+              <label><input type="radio" name="monto" value={m} checked={i === 1} /><span>US$ {m}</span></label>
+            ))}
+            <label class="amounts__other"><input type="radio" name="monto" value="otro" /><span>{L('Otro monto', 'Other amount')}</span></label>
+          </div>
+          <div class="other" data-other hidden>
+            <label for="monto-otro" class="small">{L('Monto en dólares (mínimo', 'Amount in dollars (minimum')} US$ {MONTO_MINIMO})</label>
+            <div class="other__field"><span aria-hidden="true">US$</span><input class="input" id="monto-otro" name="montoOtro" type="number" inputmode="decimal" min={MONTO_MINIMO} max="10000" step="1" placeholder="50" /></div>
+          </div>
+        </fieldset>
+
+        <label class="check"><input type="checkbox" id="cubrir" name="cubrir" /> <span>{en ? `I'd like to cover the ${Math.round(COMISION * 100)}% processing fee so the foundation receives the full amount.` : `Quiero cubrir el ${Math.round(COMISION * 100)} % de comisión del procesamiento, para que la fundación reciba el monto completo.`}</span></label>
+
+        <p class="give__sum" id="give-sum" aria-live="polite">{L('Tu aporte:', 'Your gift:')} <strong data-sum>US$ 20</strong> <span data-sum-freq>{L('una sola vez', 'one time')}</span></p>
+
+        <button class="btn btn--accent give__cta" type="submit" data-track="donar_stripe">{L('Donar con tarjeta, Apple Pay o Google Pay', 'Donate by card, Apple Pay or Google Pay')} <span class="arrow">→</span></button>
+        <p class="form-status small" data-status role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="give__step give__pay" data-pay hidden>
+        <button class="link give__back" type="button" data-back>{L('← Cambiar monto', '← Change amount')}</button>
+        <p class="give__sum" data-pay-sum></p>
+        <div id="stripe-checkout" class="give__checkout"></div>
+      </div>
+
+      <div class="give__step give__demo" data-demo hidden>
+        <p class="eyebrow">{L('Vista previa', 'Preview')}</p>
+        <p>{L('Aquí aparece el formulario de pago seguro de Stripe, dentro de esta misma página: tarjeta, Apple Pay o Google Pay. Se activa cuando se configuran las claves de Stripe en el servidor.', 'Stripe’s secure payment form appears here, right on this page: card, Apple Pay or Google Pay. It goes live once the Stripe keys are set on the server.')}</p>
+        <button class="link give__back" type="button" data-back>{L('← Volver', '← Back')}</button>
+      </div>
+
+      <p class="give__secure small muted">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        {L('Pago procesado por Stripe. La fundación nunca recibe ni almacena los datos de tu tarjeta. Recibirás un comprobante por correo.', 'Payment processed by Stripe. The foundation never receives or stores your card details. You’ll get a receipt by email.')}
+      </p>
+    </div>
+
+    <aside class="give__side">
+      <p class="eyebrow" data-reveal>{L('A qué se destina tu aporte', 'What your gift supports')}</p>
+      <ul class="dest" role="list">
+        {programas.slice(0, 4).map((p) => <li data-reveal><strong>{p.titulo[lang]}</strong><span class="muted small">{p.texto[lang]}</span></li>)}
+      </ul>
+      <p class="small muted" data-reveal>{L('Más información en', 'More in')} <a class="link" href={href(lang, '/transparencia')}>{L('Impacto y transparencia', 'Impact & transparency')}</a>.</p>
+    </aside>
+  </section>
+
+  <section class="section wrap grid-12">
+    <div style="grid-column: 1 / span 6" class="faqmini faq">
+      <h2 class="h3" data-reveal>{L('Antes de donar', 'Before you give')}</h2>
+      <details data-reveal><summary>{L('¿En qué moneda se cobra?', 'What currency is charged?')}</summary><p>{L(`En dólares estadounidenses (${MONEDA}). Si tu tarjeta es de otro país, tu banco hará la conversión según su tasa y puede aplicar cargos propios.`, `US dollars (${MONEDA}). If your card is from another country, your bank converts at its own rate and may add its own fees.`)}</p></details>
+      <details data-reveal><summary>{L('¿Puedo cancelar mi donación mensual?', 'Can I cancel my monthly gift?')}</summary><p>{L('Sí, cuando quieras. Escríbenos a', 'Yes, anytime. Write to')} <a class="link" href={STRIPE_PORTAL || `mailto:${LINKS.emailFundacion}`}>{STRIPE_PORTAL ? L('el portal de donantes', 'the donor portal') : LINKS.emailFundacion}</a>.</p></details>
+      <details data-reveal><summary>{L('¿Recibo un comprobante?', 'Do I get a receipt?')}</summary><p>{L('Sí. Stripe te envía un recibo por correo electrónico al completar cada pago.', 'Yes. Stripe emails you a receipt after each payment.')}</p></details>
+      <a class="link" href={href(lang, '/preguntas-frecuentes')} data-reveal>{L('Más preguntas frecuentes →', 'More FAQ →')}</a>
+    </div>
+    <div style="grid-column: 8 / span 5; display: grid; gap: var(--sp-4); align-content: start">
+      <div class="card" data-reveal><p class="eyebrow">{L('Empresas', 'Companies')}</p><p style="margin: var(--sp-3) 0">{L('Alianzas estratégicas público-privadas y voluntariado corporativo.', 'Strategic public-private partnerships and corporate volunteering.')}</p><a class="link" href={href(lang, '/alianzas')}>{L('Alianzas empresariales →', 'Corporate partnerships →')}</a></div>
+      <div class="card" data-reveal><p class="eyebrow">{L('Tiempo', 'Time')}</p><p style="margin: var(--sp-3) 0">{L('También puedes participar con tu tiempo.', 'You can also give your time.')}</p><a class="link" href={href(lang, '/voluntariado')}>{L('Voluntariado →', 'Volunteer →')}</a></div>
+    </div>
+  </section>
+
+  {STRIPE_PUBLISHABLE_KEY && <script is:inline src="https://js.stripe.com/v3/"></script>}
+  <script define:vars={{ config }}>
+    const cfg = JSON.parse(config);
+    const box = document.querySelector('.give__box');
+    const form = document.getElementById('donar-form');
+    const other = form.querySelector('[data-other]');
+    const otherInput = form.querySelector('#monto-otro');
+    const sum = form.querySelector('[data-sum]');
+    const sumFreq = form.querySelector('[data-sum-freq]');
+    const status = form.querySelector('[data-status]');
+    const pay = box.querySelector('[data-pay]');
+    const demo = box.querySelector('[data-demo]');
+    let checkout = null;
+
+    const tx = cfg.tx;
+    const fmt = (n) => 'US$ ' + n.toLocaleString(cfg.lang === 'en' ? 'en-US' : 'es-CO', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+    const datos = () => {
+      const freq = form.freq.value;
+      const base = form.monto.value === 'otro' ? Number(otherInput.value) : Number(form.monto.value);
+      const cubrir = form.cubrir.checked;
+      const total = cubrir ? Math.round(base * (1 + cfg.comision) * 100) / 100 : base;
+      return { freq, base, cubrir, total };
+    };
+    const update = () => {
+      other.hidden = form.monto.value !== 'otro';
+      const d = datos();
+      sum.textContent = d.base >= cfg.minimo ? fmt(d.total) : tx.elige;
+      sumFreq.textContent = d.freq === 'mensual' ? tx.mes : tx.unica;
+      status.textContent = '';
+    };
+    form.addEventListener('input', update);
+    form.addEventListener('change', (e) => { update(); if (e.target.value === 'otro') otherInput.focus(); });
+
+    const mostrar = (el) => { [form, pay, demo].forEach((x) => (x.hidden = x !== el)); };
+    box.querySelectorAll('[data-back]').forEach((b) => b.addEventListener('click', () => {
+      if (checkout) { checkout.destroy(); checkout = null; }
+      mostrar(form);
+    }));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const d = datos();
+      if (!(d.base >= cfg.minimo)) { status.textContent = `${tx.min}${cfg.minimo}.`; otherInput.focus(); return; }
+      if (!cfg.pk || !window.Stripe) { mostrar(demo); return; }
+      status.textContent = tx.prep;
+      try {
+        const stripe = window.Stripe(cfg.pk);
+        checkout = await stripe.initEmbeddedCheckout({
+          fetchClientSecret: async () => {
+            const r = await fetch(cfg.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ frecuencia: d.freq, monto: d.base, cubrirComision: d.cubrir, idioma: cfg.lang }) });
+            const j = await r.json();
+            if (!r.ok || !j.clientSecret) throw new Error(j.error || 'Error');
+            return j.clientSecret;
+          },
+        });
+        pay.querySelector('[data-pay-sum]').textContent = `${tx.aporte}${fmt(d.total)} ${d.freq === 'mensual' ? tx.mes : tx.unica}`;
+        mostrar(pay);
+        checkout.mount('#stripe-checkout');
+        status.textContent = '';
+        window.gtag && window.gtag('event', 'inicio_pago', { value: d.total, currency: 'USD' });
+      } catch (err) {
+        status.textContent = (err && err.message && err.message !== 'Error') ? err.message : `${tx.err}${cfg.email}.`;
+      }
+    });
+    update();
+  </script>
+</Base>
+<style>
+  .give { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+  .give__box { position: relative; overflow: hidden; background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(1.5rem, 4vw, 3rem); box-shadow: var(--shadow-2); display: grid; gap: var(--sp-6); }
+  :global(.give__lines) { position: absolute; right: -35%; top: -35%; width: 80%; color: var(--moss); opacity: .12; pointer-events: none; }
+  fieldset { border: 0; padding: 0; margin: 0; position: relative; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--paper-deep); border-radius: var(--r-pill); padding: 4px; }
+  .seg label, .amounts__grid label { position: relative; cursor: pointer; }
+  .seg input, .amounts__grid input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .seg span { display: block; text-align: center; padding: .8em 1em; border-radius: var(--r-pill); font-weight: 600; font-size: var(--fs-sm); transition: background var(--dur-2), color var(--dur-2); }
+  .seg input:checked + span { background: var(--forest); color: var(--paper); }
+  .seg input:focus-visible + span, .amounts__grid input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .amounts legend { margin-bottom: var(--sp-3); }
+  .amounts__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); }
+  .amounts__grid span { display: grid; place-items: center; min-height: 64px; border: 1px solid var(--line-strong); border-radius: var(--r-md); font-family: var(--font-display); font-size: var(--fs-xl); transition: all var(--dur-2) var(--ease-out); }
+  .amounts__grid label:hover span { border-color: var(--forest); }
+  .amounts__grid input:checked + span { background: var(--forest); color: var(--paper); border-color: var(--forest); transform: translateY(-2px); }
+  .amounts__other span { font-family: var(--font-body); font-size: var(--fs-sm); font-weight: 600; }
+  .other { margin-top: var(--sp-4); display: grid; gap: var(--sp-2); }
+  .other__field { display: flex; align-items: center; gap: var(--sp-3); }
+  .other__field span { font-family: var(--font-display); font-size: var(--fs-lg); }
+  .other__field .input { max-width: 220px; font-size: var(--fs-lg); }
+  .give__step { display: grid; gap: var(--sp-6); position: relative; }
+  .give__step[hidden] { display: none; }
+  .give__back { background: none; border: 0; cursor: pointer; justify-self: start; font-weight: 600; font-size: var(--fs-sm); padding: 0 0 2px; }
+  .give__checkout { min-height: 420px; }
+  .give__demo { border: 1px dashed var(--line-strong); border-radius: var(--r-md); padding: var(--sp-6); gap: var(--sp-4); }
+  .give__demo p { margin: 0; }
+  .give__sum { font-size: var(--fs-lg); margin: 0; position: relative; }
+  .give__cta { justify-content: center; padding-block: 1.15em; font-size: var(--fs-base); position: relative; }
+  .give__cta { width: 100%; }
+  .form-status { margin: 0; }
+  .form-status:empty { display: none; }
+  .give__secure { display: flex; gap: .6em; align-items: flex-start; margin: 0; position: relative; }
+  .give__secure svg { flex: none; margin-top: .25em; }
+  .dest { border-top: 1px solid var(--line-strong); margin-block: var(--sp-4); }
+  .dest li { display: grid; gap: var(--sp-1); padding-block: var(--sp-4); border-bottom: 1px solid var(--line); }
+  .dest strong { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-lg); }
+  .faqmini { display: grid; gap: var(--sp-3); align-content: start; }
+  @media (max-width: 860px) { .give { grid-template-columns: 1fr; } }
+</style>

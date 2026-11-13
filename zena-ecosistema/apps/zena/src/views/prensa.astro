@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { prensa } from '../data/contenido';
+import { type Lang, t, href } from '../../../../shared/i18n';
+const { lang } = Astro.props as { lang: Lang };
+// Apariciones mencionadas en zenaayoub.com/prensa y en el Instagram oficial
+const apariciones = [
+  { medio: 'Despierta América', texto: { es: 'Conversación con Marcela Sarmiento sobre Las Aventuras en Turín y Michel y María.', en: 'A conversation with Marcela Sarmiento about Las Aventuras en Turín and Michel y María.' } },
+  { medio: 'La FM', texto: { es: 'El propósito detrás de Las Aventuras en Turín: entretenimiento pausado, educativo y con valores.', en: 'The purpose behind Las Aventuras en Turín: calm, educational, values-driven entertainment.' } },
+  { medio: 'EAFIT+', texto: { es: 'Charla sobre cómo la maternidad inspiró el universo transmedia de Las Aventuras en Turín.', en: 'A talk on how motherhood inspired the transmedia world of Las Aventuras en Turín.' } },
+];
+---
+<Base lang={lang} title={t(lang, 'Prensa', 'Press')} description={t(lang, 'Noticias principales y entrevistas sobre Zena Ayoub y Las Aventuras en Turín.', 'Top news and interviews about Zena Ayoub and Las Aventuras en Turín.')}>
+  <PageHead num="03" eyebrow={t(lang, 'Prensa', 'Press')} lines={lang === 'en' ? ['Top news', '<em class="wonk">and interviews.</em>'] : ['Noticias principales', '<em class="wonk">y entrevistas.</em>']} />
+  <section class="wrap">
+    <ol class="press" role="list">
+      {prensa.map((p, i) => (
+        <li data-reveal style={`--d:${i * 60}ms`}>
+          <a href={p.url} target="_blank" rel="noopener" data-track="prensa" data-track-label={p.medio}>
+            <span class="press__medio">{p.medio}</span>
+            <span class="press__titulo">{p.titulo}</span>
+            <span class="press__fecha">{p.fecha ? p.fecha[lang] : ''}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>{t(lang, 'Radio, televisión y charlas', 'Radio, TV and talks')}</p>
+    <ul class="apar" role="list">
+      {apariciones.map((a) => <li data-reveal><h2 class="h3">{a.medio}</h2><p class="muted">{a.texto[lang]}</p></li>)}
+    </ul>
+    <p class="small muted" data-reveal style="margin-top: var(--sp-6)">{t(lang, '¿Eres periodista?', 'Are you a journalist?')} <a class="link" href={href(lang, '/contacto')}>{t(lang, 'Escríbenos', 'Get in touch')}</a>.</p>
+  </section>
+</Base>
+<style>
+  .press { margin-top: var(--sp-5); border-top: 1px solid var(--line-strong); }
+  .press a { display: grid; grid-template-columns: 13rem 1fr 11rem; gap: var(--sp-5); padding-block: var(--sp-6); border-bottom: 1px solid var(--line-strong); text-decoration: none; align-items: baseline; transition: padding var(--dur-2) var(--ease-out), background var(--dur-2); }
+  .press a:hover { padding-inline: var(--sp-4); background: var(--paper-raised); }
+  .press__medio { font-size: var(--fs-xs); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--accent); }
+  .press__titulo { font-family: var(--font-display); font-size: var(--fs-xl); line-height: 1.2; }
+  .press__fecha { font-size: var(--fs-sm); color: var(--ink-soft); text-align: right; }
+  .apar { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-6); margin-top: var(--sp-5); }
+  .apar li { border-top: 1px solid var(--line-strong); padding-top: var(--sp-5); }
+  @media (max-width: 860px) { .press a { grid-template-columns: 1fr; gap: var(--sp-2); } .press__fecha { text-align: left; } .apar { grid-template-columns: 1fr; } }
+</style>

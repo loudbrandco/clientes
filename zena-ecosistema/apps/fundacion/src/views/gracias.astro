@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { ZENA_URL } from '../../../../shared/sites.mjs';
+import { type Lang, href, ext, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Gracias por tu donación', 'Thank you for your gift')} description={L('Gracias por apoyar a The Adventurers Children Foundation.', 'Thank you for supporting The Adventurers Children Foundation.')} noindex>
+  <section class="wrap section thanks">
+    <p class="eyebrow">{L('Donación recibida', 'Gift received')}</p>
+    <h1 class="h1">{L('Gracias.', 'Thank you.')} <em class="it-accent">{L('Dejaste una huella positiva.', 'You left a positive footprint.')}</em></h1>
+    <p class="lead">{L('Recibirás el comprobante de Stripe en tu correo.', 'You’ll receive Stripe’s receipt by email.')}</p>
+    <div class="cta-row">
+      <a class="btn" href={href(lang, '/programas')}>{L('Qué hacemos', 'What we do')}</a>
+      <a class="btn btn--ghost" href={ext(lang, ZENA_URL, '/las-aventuras-en-turin')}>Las Aventuras en Turín ↗</a>
+    </div>
+  </section>
+  <script>window.addEventListener('load', () => window.gtag && window.gtag('event', 'donacion_completada'));</script>
+</Base>
+<style>.thanks { display: grid; gap: var(--sp-5); justify-items: start; max-width: 900px; }</style>

@@ -1,0 +1,268 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../../../../shared/components/Img.astro';
+import Split from '../../../../shared/components/Split.astro';
+import Contours from '../../../../shared/components/Contours.astro';
+import LogoFundacion from '../../../../shared/components/LogoFundacion.astro';
+import { programas, proyectos, puente, porQue, educacion, comoLoHacemos, movilizamos, cierre, origen, dondeTrabajamos, turinPueblo, certificada, aliadosTexto } from '../data/fundacion';
+import { ZENA_URL } from '../../../../shared/sites.mjs';
+import { type Lang, href, ext, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Inicio', 'Home')} description={L('The Adventurers Children Foundation: experiencias familiares en la naturaleza, educación ambiental y conservación. Con sede en Miami y programas en Tena, Colombia.', 'The Adventurers Children Foundation: family experiences in nature, environmental education and conservation. Based in Miami, with programs in Tena, Colombia.')}>
+
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <p class="eyebrow" data-reveal="fade">{certificada[lang]}</p>
+        <Split as="h1" class="display hero__title" lines={lang === 'en' ? ['When a family lives', 'an adventure with purpose,', '<em class="it-accent">it creates a future.</em>'] : ['Cuando una familia vive', 'una aventura con propósito,', '<em class="it-accent">crea futuro.</em>']} delay={100} />
+        <p class="lead" data-reveal style="--d:600ms">{puente.map((p) => p[lang]).join(' ')}</p>
+        <div class="cta-row" data-reveal style="--d:750ms">
+          <a class="btn btn--accent" href={href(lang, '/donar')} data-track="cta_donar_hero">{L('Donar', 'Donate')} <span class="arrow">→</span></a>
+          <a class="btn btn--ghost" href={href(lang, '/programas')}>{L('Qué hacemos', 'What we do')}</a>
+        </div>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <Contours class="hero__contours" seed={7} rings={16} animate />
+        <div class="hero__art">
+          <Img name="ilus-sede-fundacion" widths={[800, 1600]} sizes="(max-width:860px) 90vw, 46vw" alt="" eager />
+        </div>
+        <span class="hero__pin">Miami · Tena</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto band--forest">
+    <div class="wrap section--tight manifesto__grid">
+      <div class="manifesto__logo"><LogoFundacion /></div>
+      <div class="manifesto__words">
+        <p class="manifesto__line" data-reveal>{movilizamos[0][lang]}</p>
+        <p class="manifesto__line manifesto__line--b" data-reveal style="--d:150ms"><em>{movilizamos[1][lang]}</em></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight wrap gallery">
+    <div class="gallery__head">
+      <p class="eyebrow" data-reveal>{L('Nuestra casa en Tena', 'Our home in Tena')}</p>
+      <h2 class="h2" data-reveal>{L('Aquí sucede la aventura.', 'This is where the adventure happens.')}</h2>
+    </div>
+    <div class="gallery__grid">
+      <figure class="g g--tall" data-reveal><Img name="fundacion-sede-tena" widths={[600, 1200]} sizes="(max-width:860px) 92vw, 34vw" alt={L('Casa de The Adventurers Children Foundation en Tena, Cundinamarca', 'The Adventurers Children Foundation house in Tena, Cundinamarca')} /></figure>
+      <figure class="g g--wide" data-reveal style="--d:80ms"><Img name="fundacion-aros-ninos" widths={[600, 1200]} sizes="(max-width:860px) 92vw, 60vw" alt={L('Niños jugando con aros frente al pendón de la fundación', 'Children playing with hoops in front of the foundation banner')} /></figure>
+      <figure class="g" data-reveal style="--d:160ms"><Img name="fundacion-lectura-ninos" widths={[600, 1200]} sizes="(max-width:860px) 92vw, 30vw" alt={L('Niños leyendo un libro de Las Aventuras en Turín en la fundación', 'Children reading a Las Aventuras en Turín book at the foundation')} /></figure>
+      <figure class="g" data-reveal style="--d:240ms"><Img name="fundacion-sede-entrada" widths={[600]} sizes="(max-width:860px) 92vw, 30vw" alt={L('Entrada de la casa de la fundación con la bandera de Colombia', 'Entrance of the foundation house with the Colombian flag')} /></figure>
+    </div>
+  </section>
+
+  <section class="section wrap grid-12 why">
+    <div class="why__label"><p class="eyebrow" data-reveal>{L('Por qué existimos', 'Why we exist')}</p></div>
+    <div class="why__body">
+      <Split class="h2" lines={lang === 'en' ? ['Caring for the environment', '<em class="it-accent">begins at home.</em>'] : ['La conservación del medio', 'ambiente <em class="it-accent">comienza en casa.</em>']} />
+      <div class="why__cols" data-reveal>
+        <p class="lead">{porQue[1][lang]}</p>
+        <p class="lead"><strong>{educacion[lang]}</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band how">
+    <div class="wrap">
+      <div class="how__head">
+        <p class="eyebrow" data-reveal>{L('Cómo lo hacemos', 'How we do it')}</p>
+        <Split class="h2" lines={lang === 'en' ? ['Through', '<em class="it-accent">adventure with purpose.</em>'] : ['A través de la', '<em class="it-accent">aventura con propósito.</em>']} />
+        <p class="muted" data-reveal>{L('Diseñamos experiencias familiares que:', 'We design family experiences that:')}</p>
+      </div>
+      <ol class="how__steps" role="list">
+        {comoLoHacemos.map((c, i) => <li data-reveal style={`--d:${i * 90}ms`}><span>{String(i + 1).padStart(2, '0')}</span><p>{c[lang]}.</p></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section wrap programs">
+    <div class="programs__head">
+      <div>
+        <p class="eyebrow" data-reveal>{L('Qué hacemos', 'What we do')}</p>
+        <h2 class="h2" data-reveal style="margin-top: var(--sp-4)">{L('Programas', 'Programs')}</h2>
+      </div>
+      <a class="link" href={href(lang, '/programas')} data-reveal>{L('Ver programas →', 'See programs →')}</a>
+    </div>
+    <ol class="plist" role="list">
+      {programas.map((p, i) => (
+        <li data-reveal style={`--d:${i * 60}ms`}>
+          <a href={href(lang, '/programas') + '#' + p.slug}>
+            <span class="plist__n">{String(i + 1).padStart(2, '0')}</span>
+            <span class="plist__t">{p.titulo[lang]}</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="territory band--forest">
+    <div class="wrap section grid-12">
+      <div class="territory__text">
+        <p class="eyebrow" data-reveal>{L('Dónde trabajamos', 'Where we work')}</p>
+        <Split class="h1" lines={['Tena, Cundinamarca.', lang === 'en' ? '<em>Where Turín is real.</em>' : '<em>Donde Turín es real.</em>']} />
+        <p class="lead" data-reveal>{dondeTrabajamos[lang]}</p>
+        <p data-reveal>{turinPueblo[lang]}</p>
+        <div class="cta-row" data-reveal>
+          <a class="btn btn--accent" href={href(lang, '/proyectos')}>{L('Ver proyectos', 'See projects')} <span class="arrow">→</span></a>
+        </div>
+      </div>
+      <div class="territory__map" aria-hidden="true">
+        <Contours seed={42} rings={12} />
+        <span class="territory__dot territory__dot--a">Tena</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap projects">
+    <p class="eyebrow" data-reveal>{L('Proyectos', 'Projects')}</p>
+    <div class="pcards">
+      {proyectos.slice(0, 2).map((p, i) => (
+        <a class="pcard" href={href(lang, '/proyectos') + '#' + p.slug} data-reveal style={`--d:${i * 90}ms`}>
+          <div class="pcard__img"><img src={p.img} alt="" width="800" height="600" loading="lazy" /></div>
+          <span class="tag tag--desarrollo">{p.estado[lang]}</span>
+          <h3 class="h3">{p.titulo[lang]}</h3>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap grid-12 story">
+    <figure class="story__img" data-reveal="clip">
+      <div class="frame"><Img name="jornada-2026" widths={[600, 864]} sizes="(max-width:860px) 92vw, 34vw" alt={L('Familias y niños posan frente al pendón de The Adventurers Children Foundation durante una jornada', 'Families and children pose in front of The Adventurers Children Foundation banner during an outing')} /></div>
+      <figcaption class="caption">{L('Jornada con familias, 2026. Fotografía de la fundación.', 'Outing with families, 2026. Foundation photo.')}</figcaption>
+    </figure>
+    <div class="story__text">
+      <p class="eyebrow" data-reveal>{L('No lo hacemos solos', 'We don’t do it alone')}</p>
+      <h2 class="h2" data-reveal>{cierre[2][lang].replace(/\.$/, '')}.</h2>
+      <p class="lead" data-reveal>{aliadosTexto[lang]}</p>
+      <a class="link" href={href(lang, '/quienes-somos')} data-reveal>{L('Quiénes somos →', 'About us →')}</a>
+    </div>
+  </section>
+
+  <section class="section--tight wrap join">
+    <p class="eyebrow" data-reveal>{L('Participa', 'Get involved')}</p>
+    <h2 class="h1" data-reveal style="margin-top: var(--sp-4)">{L('Pero no lo hacemos solos.', 'But we don’t do it alone.')}</h2>
+    <div class="join__grid">
+      <a href={href(lang, '/donar')} class="join__item join__item--main" data-reveal data-track="cta_donar_participa">
+        <span class="join__k">{L('Donar', 'Donate')}</span>
+        <span class="join__t">{L('Tu apoyo impulsa proyectos ecológicos y educación ambiental para nuestros niños.', 'Your support drives ecological projects and environmental education for our children.')}</span>
+        <span class="join__go">{L('Donar ahora →', 'Donate now →')}</span>
+      </a>
+      <a href={href(lang, '/voluntariado')} class="join__item" data-reveal style="--d:90ms">
+        <span class="join__k">{L('Voluntariado', 'Volunteer')}</span>
+        <span class="join__t">{L('Participación comunitaria y voluntariado corporativo.', 'Community participation and corporate volunteering.')}</span>
+        <span class="join__go">{L('Quiero participar →', 'I want to join →')}</span>
+      </a>
+      <a href={href(lang, '/alianzas')} class="join__item" data-reveal style="--d:180ms">
+        <span class="join__k">{L('Alianzas', 'Partnerships')}</span>
+        <span class="join__t">{L('Alianzas estratégicas público-privadas.', 'Strategic public-private partnerships.')}</span>
+        <span class="join__go">{L('Crear una alianza →', 'Partner with us →')}</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section wrap grid-12 trust">
+    <div class="trust__card card" data-reveal>
+      <p class="eyebrow">{L('Transparencia', 'Transparency')}</p>
+      <h2 class="h3" style="margin-top: var(--sp-3)">{certificada[lang]}.</h2>
+      <a class="link" href={href(lang, '/transparencia')}>{L('Impacto y transparencia →', 'Impact & transparency →')}</a>
+    </div>
+    <div class="trust__origin" data-reveal style="--d:120ms">
+      <Img name="logo-turin" widths={[300]} sizes="120px" alt="Las Aventuras en Turín" />
+      <div>
+        <p class="eyebrow">{L('El origen', 'The origin')}</p>
+        <p class="lead" style="margin-top: var(--sp-3)">{origen[lang]}</p>
+        <p class="small"><a class="link" href={ext(lang, ZENA_URL, '/las-aventuras-en-turin')}>Las Aventuras en Turín ↗</a> · <a class="link" href={ext(lang, ZENA_URL)}>Zena Ayoub ↗</a></p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: clamp(2rem, 5vw, 4.5rem) clamp(3rem, 7vw, 6rem); overflow: hidden; }
+  .hero__grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; }
+  .hero__text { display: grid; gap: var(--sp-6); justify-items: start; }
+  :global(.hero__title) { font-size: clamp(2.2rem, 1.2rem + 2.6vw, 3.8rem); line-height: 1.04; width: 100%; }
+  .hero__visual { position: relative; aspect-ratio: 1; }
+  :global(.hero__contours) { position: absolute; inset: -12%; width: 124%; height: 124%; color: var(--moss); opacity: .55; }
+  .hero__art { position: absolute; inset: 14% 8% 10% 12%; border-radius: 50% 50% var(--r-lg) var(--r-lg); overflow: hidden; background: #ECE4D0; box-shadow: var(--shadow-2); }
+  .hero__art :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 52% 50%; }
+  .hero__pin { position: absolute; left: 4%; bottom: 14%; background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--r-pill); padding: .5em 1em; font-size: var(--fs-xs); letter-spacing: .08em; text-transform: uppercase; box-shadow: var(--shadow-1); }
+  .hero__pin::before { content: '●'; color: var(--accent); margin-right: .5em; }
+  @media (max-width: 860px) { .hero__grid { grid-template-columns: 1fr; } .hero__visual { max-width: 520px; width: 100%; justify-self: center; } }
+
+  .manifesto__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+  .manifesto__words { display: grid; gap: var(--sp-3); }
+  .manifesto__line { font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1.05; margin: 0; letter-spacing: -0.02em; }
+  .manifesto__line--b { color: #CFE0C3; }
+  @media (max-width: 860px) { .manifesto__grid { grid-template-columns: 1fr; } }
+  .gallery { display: grid; gap: var(--sp-5); padding-top: var(--sp-8); }
+  .gallery__head { display: grid; gap: var(--sp-2); }
+  .gallery__head .h2 { margin: 0; }
+  .gallery__grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 260px 260px; gap: var(--sp-4); }
+  .g { margin: 0; border-radius: var(--r-lg); overflow: hidden; background: var(--paper-deep); }
+  .g :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-3) var(--ease-out); }
+  .g:hover :global(img) { transform: scale(1.03); }
+  .g--tall { grid-row: span 2; }
+  .g--wide { grid-column: span 2; }
+  @media (max-width: 760px) { .gallery__grid { grid-template-columns: 1fr 1fr; grid-template-rows: none; grid-auto-rows: 190px; } .g--tall { grid-column: span 2; grid-row: span 2; } .g--wide { grid-column: span 2; grid-row: span 1; } }
+
+  .why__label { grid-column: 1 / span 3; }
+  .why__body { grid-column: 4 / span 9; display: grid; gap: var(--sp-6); }
+  .why__cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); }
+  @media (max-width: 860px) { .why__cols { grid-template-columns: 1fr; } }
+
+  .how__head { display: grid; gap: var(--sp-4); margin-bottom: var(--sp-7); }
+  .how__steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-5); }
+  .how__steps li { border-top: 2px solid var(--forest); padding-top: var(--sp-4); }
+  .how__steps span { font-family: var(--font-display); font-style: italic; font-size: var(--fs-xl); color: var(--accent); }
+  .how__steps p { font-size: var(--fs-lg); line-height: 1.35; margin-top: var(--sp-3); font-family: var(--font-display); }
+  @media (max-width: 860px) { .how__steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .how__steps { grid-template-columns: 1fr; } }
+
+  .programs__head { display: flex; justify-content: space-between; align-items: end; gap: var(--sp-5); flex-wrap: wrap; margin-bottom: var(--sp-6); }
+  .plist { border-top: 1px solid var(--line-strong); margin-bottom: var(--sp-4); }
+  .plist a { display: grid; grid-template-columns: 4rem 1fr auto; gap: var(--sp-5); align-items: center; padding-block: var(--sp-5); border-bottom: 1px solid var(--line-strong); text-decoration: none; transition: padding var(--dur-2) var(--ease-out), background var(--dur-2); }
+  .plist a:hover { padding-inline: var(--sp-4); background: var(--paper-raised); }
+  .plist__n { font-family: var(--font-display); font-style: italic; color: var(--ink-soft); }
+  .plist__t { font-family: var(--font-display); font-size: var(--fs-xl); line-height: 1.15; }
+  @media (max-width: 600px) { .plist a { grid-template-columns: 2.5rem 1fr; } .plist .tag { grid-column: 2; justify-self: start; } }
+
+  .territory__text { grid-column: 1 / span 6; display: grid; gap: var(--sp-6); justify-items: start; align-content: center; }
+  .territory__text :global(em) { color: #9FC3D6; }
+  .territory__map { grid-column: 8 / span 5; position: relative; color: #8FB08A; aspect-ratio: 1; }
+  .territory__map :global(svg) { width: 100%; height: 100%; opacity: .7; }
+  .territory__dot { position: absolute; font-size: var(--fs-xs); letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: .5em; }
+  .territory__dot::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 6px rgb(181 64 44 / .25); }
+  .territory__dot--a { left: 46%; top: 44%; } .territory__dot--b { left: 18%; top: 22%; } .territory__dot--c { left: 58%; top: 76%; }
+  .territory__dot--b::before, .territory__dot--c::before { background: #9FC3D6; box-shadow: 0 0 0 6px rgb(159 195 214 / .2); }
+
+  .story__img { grid-column: 1 / span 4; margin: 0; }
+  .story__img .frame { aspect-ratio: 4 / 5; }
+  .story__text { grid-column: 6 / span 7; display: grid; gap: var(--sp-5); align-content: center; justify-items: start; }
+
+  .join__grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: var(--sp-4); margin-top: var(--sp-7); }
+  .join__item { display: grid; gap: var(--sp-4); align-content: space-between; min-height: 300px; padding: var(--sp-6); border-radius: var(--r-lg); border: 1px solid var(--line-strong); text-decoration: none; transition: transform var(--dur-3) var(--ease-out), background var(--dur-2), color var(--dur-2); }
+  .join__item:hover { transform: translateY(-6px); background: var(--forest); color: var(--paper); }
+  .join__item--main { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .join__item--main:hover { background: #9a3524; }
+  .join__k { font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1; }
+  .join__t { font-size: var(--fs-lg); line-height: 1.4; }
+  .join__go { font-weight: 600; font-size: var(--fs-sm); }
+  @media (max-width: 860px) { .join__grid { grid-template-columns: 1fr; } .join__item { min-height: 0; } }
+
+  .trust__card { grid-column: 1 / span 6; display: grid; gap: var(--sp-3); justify-items: start; }
+  .trust__card p { margin: 0; }
+  .trust__origin { grid-column: 8 / span 5; display: grid; grid-template-columns: 120px 1fr; gap: var(--sp-5); align-items: center; }
+  @media (max-width: 860px) { .trust__origin { grid-template-columns: 90px 1fr; } }
+  .plist .arrow { color: var(--accent); }
+  .pcards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); margin-top: var(--sp-5); }
+  @media (max-width: 760px) { .pcards { grid-template-columns: 1fr; } }
+</style>

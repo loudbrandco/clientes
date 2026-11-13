@@ -1,0 +1,67 @@
+---
+import '../../../../shared/styles/base.css';
+import '../styles/theme.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Consent from '../../../../shared/components/Consent.astro';
+import { GA_FUNDACION, ZENA_URL, LINKS, STAGING } from '../../../../shared/sites.mjs';
+import { type Lang, altPath, href } from '../../../../shared/i18n';
+
+interface Props { title: string; description: string; image?: string; noindex?: boolean; jsonld?: Record<string, unknown>; lang?: Lang }
+const { title, description, image = '/img/ilus-boceto-montana-1500.webp', noindex = false, jsonld, lang = 'es' } = Astro.props;
+const en = lang === 'en';
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const home = title === 'Inicio' || title === 'Home';
+const fullTitle = home
+  ? (en ? 'The Adventurers Children Foundation · Nature, family and environmental education' : 'The Adventurers Children Foundation · Naturaleza, familia y educación ambiental')
+  : `${title} · The Adventurers Children Foundation`;
+const alt = { es: new URL(altPath(Astro.url.pathname, 'es'), Astro.site).href, en: new URL(altPath(Astro.url.pathname, 'en'), Astro.site).href };
+const ld = [
+  {
+    '@context': 'https://schema.org', '@type': 'NGO', name: 'The Adventurers Children Foundation', url: Astro.site?.href,
+    nonprofitStatus: 'Nonprofit501c3',
+    logo: new URL('/img/logo-fundacion-900.webp', Astro.site).href, email: LINKS.emailFundacion,
+    address: { '@type': 'PostalAddress', addressLocality: 'Miami', addressRegion: 'FL', addressCountry: 'US' },
+    founder: { '@type': 'Person', name: 'Zena Ayoub', url: ZENA_URL },
+    areaServed: { '@type': 'Place', name: 'Tena, Cundinamarca, Colombia' },
+    sameAs: [LINKS.instagram],
+  },
+  ...(jsonld ? [jsonld] : []),
+];
+---
+<!doctype html>
+<html lang={lang} class="no-js" data-ga={GA_FUNDACION || undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {!Astro.url.pathname.includes('/404') && <link rel="canonical" href={canonical} />}
+    {(noindex || STAGING) && <meta name="robots" content="noindex, nofollow" />}
+    {!Astro.url.pathname.includes('404') && <Fragment><link rel="alternate" hreflang="es" href={alt.es} /><link rel="alternate" hreflang="en" href={alt.en} /><link rel="alternate" hreflang="x-default" href={alt.es} /></Fragment>}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Adventurers Children Foundation" />
+    <meta property="og:locale" content={en ? 'en_US' : 'es_CO'} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#1D3A2B" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">{en ? 'Skip to content' : 'Saltar al contenido'}</a>
+    <Header lang={lang} />
+    <main id="contenido"><slot /></main>
+    <Footer lang={lang} />
+    <Consent gaId={GA_FUNDACION} privacyHref={href(lang, '/privacidad')} lang={lang} />
+    <script src="../../../../shared/scripts/site.js"></script>
+  </body>
+</html>

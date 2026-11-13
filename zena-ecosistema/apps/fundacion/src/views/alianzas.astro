@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Form from '../components/Form.astro';
+import { aliadosTexto, aliados, activamos, puente } from '../data/fundacion';
+import { type Lang, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Alianzas empresariales', 'Corporate partnerships')} description={L('Alianzas con The Adventurers Children Foundation: voluntariado corporativo y alianzas público-privadas para la conservación y la educación ambiental en Tena, Colombia.', 'Partner with The Adventurers Children Foundation: corporate volunteering and public-private partnerships for conservation and environmental education in Tena, Colombia.')}>
+  <PageHead lang={lang} seccion={L('Participa · Alianzas', 'Get involved · Partnerships')} lines={lang === 'en' ? ['Between companies', '<em class="it-accent">and communities.</em>'] : ['Entre empresas', '<em class="it-accent">y comunidades.</em>']}
+    lead={puente[0][lang] + ' ' + puente[1][lang]} />
+  <section class="wrap grid-12">
+    <div style="grid-column: 1 / span 5; display: grid; gap: var(--sp-5); align-content: start">
+      <p class="lead" data-reveal>{aliadosTexto[lang]}</p>
+      <div class="card" data-reveal>
+        <p class="eyebrow">{L('Aliados', 'Partners')}</p>
+        <ul class="ticks" role="list" style="margin-top: var(--sp-3)">{aliados.map((a) => <li>{a}</li>)}</ul>
+      </div>
+      <h2 class="h3" data-reveal>{L('Activamos el cambio mediante:', 'We drive change through:')}</h2>
+      <ul class="ticks" role="list">{activamos.map((a) => <li data-reveal>{a[lang]}</li>)}</ul>
+    </div>
+    <div style="grid-column: 7 / span 6" data-reveal>
+      <Form lang={lang} asunto={L('Alianza empresarial', 'Corporate partnership')} boton={L('Proponer una alianza', 'Propose a partnership')}>
+        <div class="row2">
+          <div class="field"><label for="a-nombre">{L('Nombre', 'Name')}</label><input class="input" id="a-nombre" name="nombre" required autocomplete="name" /></div>
+          <div class="field"><label for="a-email">{L('Correo electrónico', 'Email')}</label><input class="input" id="a-email" name="email" type="email" required autocomplete="email" /></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="a-empresa">{L('Empresa u organización', 'Company or organization')}</label><input class="input" id="a-empresa" name="empresa" required autocomplete="organization" /></div>
+          <div class="field"><label for="a-tipo">{L('Interés', 'Interest')}</label>
+            <select class="select" id="a-tipo" name="interes"><option>{activamos[0][lang]}</option><option>{activamos[1][lang]}</option><option>{L('Aporte o patrocinio', 'Donation or sponsorship')}</option><option>{L('Otro', 'Other')}</option></select></div>
+        </div>
+        <div class="field"><label for="a-msg">{L('Mensaje', 'Message')}</label><textarea class="textarea" id="a-msg" name="mensaje" required></textarea></div>
+      </Form>
+    </div>
+  </section>
+</Base>
+<style>
+  .ticks { display: grid; gap: var(--sp-3); }
+  .ticks li { padding-left: 1.8em; position: relative; font-size: var(--fs-lg); }
+  .ticks li::before { content: ''; position: absolute; left: 0; top: .55em; width: .8em; height: .8em; border-radius: 50%; background: var(--moss); }
+</style>

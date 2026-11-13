@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Img from '../../../../shared/components/Img.astro';
+import { LINKS, FORM_ENDPOINT_ZENA, FUNDACION_URL } from '../../../../shared/sites.mjs';
+import { type Lang, t, href, ext } from '../../../../shared/i18n';
+const { lang } = Astro.props as { lang: Lang };
+const tipos = lang === 'en' ? ['Family or reader', 'School or library', 'Brand or company', 'Media', 'Other'] : ['Familia o lector', 'Colegio o biblioteca', 'Marca o empresa', 'Medio de comunicación', 'Otro'];
+---
+<Base lang={lang} title={t(lang, 'Contacto', 'Contact')} description={t(lang, 'Escríbele a Zena Ayoub y al equipo de Las Aventuras en Turín.', 'Write to Zena Ayoub and the Las Aventuras en Turín team.')}>
+  <PageHead num="04" eyebrow={t(lang, 'Contáctanos', 'Contact us')} lines={lang === 'en' ? ['We’d love', '<em class="wonk">to hear from you.</em>'] : ['Nos encantará', '<em class="wonk">leerte.</em>']}
+    lead={t(lang,
+      '¿Tienes preguntas, quieres colaborar o simplemente compartir cómo Las Aventuras en Turín ha llegado a tu hogar? Este espacio está abierto para familias, colegios, marcas y personas que creen en la educación consciente, la lectura en calma y el poder de las historias.',
+      'Do you have questions, want to collaborate, or simply want to share how Las Aventuras en Turín came into your home? This space is open to families, schools, brands and people who believe in mindful education, calm reading and the power of stories.')} />
+  <section class="wrap grid-12 contact">
+    <form class="contact__form" data-form data-endpoint={FORM_ENDPOINT_ZENA} data-mailto={LINKS.emailZena} data-subject={t(lang, 'Contacto desde zenaayoub.com', 'Contact from zenaayoub.com')} data-reveal>
+      <div class="row2">
+        <div class="field"><label for="nombre">{t(lang, 'Nombre', 'Name')}</label><input class="input" id="nombre" name="nombre" required autocomplete="name" /></div>
+        <div class="field"><label for="email">{t(lang, 'Correo electrónico', 'Email')}</label><input class="input" id="email" name="email" type="email" required autocomplete="email" /></div>
+      </div>
+      <div class="field">
+        <label for="tipo">{t(lang, 'Te escribo como', 'I am writing as')}</label>
+        <select class="select" id="tipo" name="tipo">{tipos.map((x) => <option>{x}</option>)}</select>
+      </div>
+      <div class="field"><label for="mensaje">{t(lang, 'Mensaje', 'Message')}</label><textarea class="textarea" id="mensaje" name="mensaje" required></textarea></div>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+      <label class="check"><input type="checkbox" name="consentimiento" required /> <span>{t(lang, 'Autorizo el tratamiento de mis datos personales para responder a este mensaje, según la', 'I authorize the processing of my personal data to answer this message, as described in the')} <a class="link" href={href(lang, '/privacidad')}>{t(lang, 'política de privacidad', 'privacy policy')}</a>.</span></label>
+      <button class="btn" type="submit">{t(lang, 'Enviar mensaje', 'Send message')} <span class="arrow">→</span></button>
+      <p class="form-status" role="status" aria-live="polite"></p>
+    </form>
+    <aside class="contact__aside" data-reveal style="--d:120ms">
+      <div class="frame" style="aspect-ratio: 1"><Img name="ilus-chimenea" widths={[600]} sizes="(max-width:860px) 92vw, 30vw" alt="" /></div>
+      <dl>
+        <dt>{t(lang, 'Escríbenos a', 'Email us at')}</dt><dd><a class="link" href={`mailto:${LINKS.emailZena}`}>{LINKS.emailZena}</a></dd>
+        <dt>{t(lang, 'Fundación', 'Foundation')}</dt><dd><a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a><br /><a class="link small" href={ext(lang, FUNDACION_URL, '/contacto')}>The Adventurers Children Foundation ↗</a></dd>
+        <dt>Instagram</dt><dd><a class="link ext" href={LINKS.instagram} target="_blank" rel="noopener">@lasaventurasenturin</a></dd>
+      </dl>
+    </aside>
+  </section>
+</Base>
+<style>
+  .contact__form { grid-column: 1 / span 7; display: grid; gap: var(--sp-5); justify-items: start; }
+  .contact__form > * { width: 100%; } .contact__form .btn { width: auto; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+  .contact__aside { grid-column: 9 / span 4; display: grid; gap: var(--sp-5); align-content: start; }
+  .contact__aside dl { margin: 0; display: grid; gap: var(--sp-2); }
+  .contact__aside dt { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .14em; color: var(--ink-soft); margin-top: var(--sp-3); }
+  .contact__aside dd { margin: 0; }
+  @media (max-width: 600px) { .row2 { grid-template-columns: 1fr; } }
+</style>

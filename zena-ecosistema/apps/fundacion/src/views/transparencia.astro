@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { certificada, programas, proyectos } from '../data/fundacion';
+import { UBICACION } from '../data/nav';
+import { LINKS } from '../../../../shared/sites.mjs';
+import { type Lang, href, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Impacto y transparencia', 'Impact & transparency')} description={L('The Adventurers Children Foundation es una fundación certificada y registrada 501(c)(3), con sede en Miami y programas en Tena, Colombia.', 'The Adventurers Children Foundation is a certified and registered 501(c)(3) foundation based in Miami with programs in Tena, Colombia.')}>
+  <PageHead lang={lang} seccion={L('Transparencia', 'Transparency')} lines={lang === 'en' ? ['Impact', '<em class="it-accent">& transparency.</em>'] : ['Impacto', '<em class="it-accent">y transparencia.</em>']} />
+  <section class="wrap grid-12">
+    <div style="grid-column: 1 / span 6; display: grid; gap: var(--sp-5); align-content: start">
+      <div class="badge" data-reveal>
+        <span class="badge__k">501(c)(3)</span>
+        <span>{certificada[lang]}</span>
+      </div>
+      <dl class="kv card" data-reveal style="grid-template-columns: 8rem 1fr">
+        <dt>{L('Organización', 'Organization')}</dt><dd>The Adventurers Children Foundation</dd>
+        <dt>{L('Estatus', 'Status')}</dt><dd>{L('Sin fines de lucro, 501(c)(3)', 'Nonprofit, 501(c)(3)')}</dd>
+        <dt>{L('Sede', 'Based in')}</dt><dd>{UBICACION[lang]}</dd>
+        <dt>{L('Territorio', 'Where we work')}</dt><dd>Tena, Cundinamarca, Colombia</dd>
+        <dt>{L('Pagos', 'Payments')}</dt><dd>{L('Procesados por Stripe, en USD', 'Processed by Stripe, in USD')}</dd>
+        <dt>{L('Contacto', 'Contact')}</dt><dd><a class="link" href={`mailto:${LINKS.emailFundacion}`}>{LINKS.emailFundacion}</a></dd>
+      </dl>
+      <p class="small muted" data-reveal>{L('¿Necesitas la documentación de registro de la fundación? Escríbenos y te la enviamos.', 'Need the foundation’s registration documents? Write to us and we’ll send them.')}</p>
+    </div>
+    <div style="grid-column: 8 / span 5; display: grid; gap: var(--sp-5); align-content: start">
+      <h2 class="h3" data-reveal>{L('A qué se destinan los aportes', 'What gifts support')}</h2>
+      <ul class="dest" role="list">{programas.slice(0, 4).map((p) => <li data-reveal>{p.titulo[lang]}</li>)}</ul>
+      <h2 class="h3" data-reveal>{L('Proyectos', 'Projects')}</h2>
+      <ul class="dest" role="list">{proyectos.map((p) => <li data-reveal><a class="link" href={href(lang, '/proyectos') + '#' + p.slug}>{p.titulo[lang]}</a> <span class="small muted">· {p.estado[lang]}</span></li>)}</ul>
+      <div class="cta-row" data-reveal><a class="btn" href={href(lang, '/informes')}>{L('Informes y documentos', 'Reports & documents')} <span class="arrow">→</span></a></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .badge { display: flex; gap: var(--sp-5); align-items: center; background: var(--forest); color: var(--paper); border-radius: var(--r-lg); padding: var(--sp-6); font-size: var(--fs-lg); }
+  .badge__k { font-family: var(--font-display); font-size: var(--fs-2xl); line-height: 1; white-space: nowrap; }
+  .dest { border-top: 1px solid var(--line-strong); }
+  .dest li { padding-block: var(--sp-3); border-bottom: 1px solid var(--line); }
+  @media (max-width: 520px) { .badge { flex-direction: column; align-items: flex-start; } }
+</style>

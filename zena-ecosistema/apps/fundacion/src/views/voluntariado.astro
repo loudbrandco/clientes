@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Form from '../components/Form.astro';
+import Img from '../../../../shared/components/Img.astro';
+import { activamos, programas } from '../data/fundacion';
+import { type Lang, href, t } from '../../../../shared/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const L = (es: string, en: string) => t(lang, es, en);
+---
+<Base lang={lang} title={L('Voluntariado', 'Volunteer')} description={L('Súmate como voluntario a The Adventurers Children Foundation: participación comunitaria, jornadas de conservación y voluntariado corporativo en Tena, Colombia.', 'Volunteer with The Adventurers Children Foundation: community participation, conservation days and corporate volunteering in Tena, Colombia.')}>
+  <PageHead lang={lang} seccion={L('Participa · Voluntariado', 'Get involved · Volunteer')} lines={lang === 'en' ? ['Every family becomes', '<em class="it-accent">an agent of change.</em>'] : ['Cada familia se convierte', '<em class="it-accent">en agente de cambio.</em>']}
+    lead={L('Activamos el cambio mediante el voluntariado corporativo, la participación comunitaria y redes internacionales de familias conscientes.', 'We drive change through corporate volunteering, community participation and international networks of mindful families.')} />
+  <section class="wrap grid-12">
+    <div style="grid-column: 1 / span 5; display: grid; gap: var(--sp-5); align-content: start">
+      <div class="frame" style="aspect-ratio: 4/3" data-reveal="clip"><Img name="jornada-2026" widths={[600, 864]} sizes="(max-width:860px) 92vw, 36vw" alt={L('Familias en una jornada de la fundación', 'Families at a foundation outing')} /></div>
+      <h2 class="h3" data-reveal>{L('Puedes sumarte a:', 'You can join:')}</h2>
+      <ul class="ticks" role="list">
+        {[programas[0], programas[2], programas[3]].map((p) => <li data-reveal>{p.titulo[lang]}</li>)}
+        <li data-reveal>{activamos[0][lang]}</li>
+      </ul>
+    </div>
+    <div style="grid-column: 7 / span 6" data-reveal>
+      <Form lang={lang} asunto={L('Voluntariado', 'Volunteering')} boton={L('Quiero ser voluntario', 'I want to volunteer')}>
+        <div class="row2">
+          <div class="field"><label for="v-nombre">{L('Nombre', 'Name')}</label><input class="input" id="v-nombre" name="nombre" required autocomplete="name" /></div>
+          <div class="field"><label for="v-email">{L('Correo electrónico', 'Email')}</label><input class="input" id="v-email" name="email" type="email" required autocomplete="email" /></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="v-ciudad">{L('Ciudad y país', 'City and country')}</label><input class="input" id="v-ciudad" name="ciudad" autocomplete="address-level2" /></div>
+          <div class="field"><label for="v-tipo">{L('Participo como', 'I’m joining as')}</label>
+            <select class="select" id="v-tipo" name="tipo"><option>{L('Persona', 'Individual')}</option><option>{L('Familia', 'Family')}</option><option>{L('Empresa', 'Company')}</option></select></div>
+        </div>
+        <div class="field"><label for="v-msg">{L('Cuéntanos cómo te gustaría participar', 'Tell us how you’d like to help')}</label><textarea class="textarea" id="v-msg" name="mensaje"></textarea></div>
+      </Form>
+    </div>
+  </section>
+  <section class="section--tight wrap"><a class="link" href={href(lang, '/alianzas')}>{L('¿Eres una empresa? Alianzas empresariales →', 'Are you a company? Corporate partnerships →')}</a></section>
+</Base>
+<style>
+  .ticks { display: grid; gap: var(--sp-3); }
+  .ticks li { padding-left: 1.8em; position: relative; font-size: var(--fs-lg); }
+  .ticks li::before { content: ''; position: absolute; left: 0; top: .55em; width: .8em; height: .8em; border-radius: 50%; background: var(--moss); }
+</style>
