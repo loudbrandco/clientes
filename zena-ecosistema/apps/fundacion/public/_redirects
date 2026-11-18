@@ -1,1 +1,5 @@
 /donate  /donar/  301
+
+# Dominio temporal → dominio definitivo
+https://fundacion.zenaayoub.com/*  https://theadventurerscf.org/:splat  301!
+https://theadventurerscf.netlify.app/*  https://theadventurerscf.org/:splat  301!
