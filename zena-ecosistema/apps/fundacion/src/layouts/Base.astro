@@ -8,7 +8,7 @@ import { GA_FUNDACION, ZENA_URL, LINKS, STAGING } from '../../../../shared/sites
 import { type Lang, altPath, href } from '../../../../shared/i18n';
 
 interface Props { title: string; description: string; image?: string; noindex?: boolean; jsonld?: Record<string, unknown>; lang?: Lang }
-const { title, description, image = '/img/ilus-boceto-montana-1500.webp', noindex = false, jsonld, lang = 'es' } = Astro.props;
+const { title, description, image = '/img/og-fundacion.jpg', noindex = false, jsonld, lang = 'es' } = Astro.props;
 const en = lang === 'en';
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const home = title === 'Inicio' || title === 'Home';
@@ -46,6 +46,7 @@ const ld = [
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(image, Astro.site).href} />
+    {image.endsWith('og-fundacion.jpg') && <><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:image:alt" content="The Adventurers Children Foundation" /></>}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#1D3A2B" />
     <link rel="icon" href="/favicon.png" type="image/png" />
