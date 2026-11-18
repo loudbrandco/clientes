@@ -3,5 +3,7 @@
 /programs  /las-aventuras-en-turin/  301
 /contact  /contacto/  301
 /cart  /las-aventuras-en-turin/  301
-/the-adventurers-children-foundation  https://fundacion.zenaayoub.com/  301
-/donate  https://fundacion.zenaayoub.com/donar/  301
+/the-adventurers-children-foundation  https://theadventurerscf.org/  301
+/donate  https://theadventurerscf.org/donar/  301
+/fundacion  https://theadventurerscf.org/  301
+/fundacion/*  https://theadventurerscf.org/:splat  301
